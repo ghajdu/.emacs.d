@@ -1,0 +1,27 @@
+[submodule "site-lisp/browse-kill-ring"]
+	path = site-lisp/browse-kill-ring
+	url = https://github.com/browse-kill-ring/browse-kill-ring.git
+[submodule "site-lisp/dash"]
+	path = site-lisp/dash
+	url = https://github.com/magnars/dash.el.git
+[submodule "site-lisp/expand-region"]
+	path = site-lisp/expand-region
+	url = git://github.com/magnars/expand-region.el.git
+[submodule "site-lisp/ido-ubiquitous"]
+	path = site-lisp/ido-ubiquitous
+	url = git://github.com/DarwinAwardWinner/ido-ubiquitous.git
+[submodule "site-lisp/multiple-cursors"]
+	path = site-lisp/multiple-cursors
+	url = git://github.com/magnars/multiple-cursors.el.git
+[submodule "site-lisp/s"]
+	path = site-lisp/s
+	url = https://github.com/magnars/s.el.git
+[submodule "site-lisp/tern"]
+	path = site-lisp/tern
+	url = https://github.com/marijnh/tern.git
+[submodule "site-lisp/yasnippet"]
+	path = site-lisp/yasnippet
+	url = git://github.com/capitaomorte/yasnippet.git
+[submodule "site-lisp/zencoding"]
+	path = site-lisp/zencoding
+	url = git://github.com/rooney/zencoding.git
