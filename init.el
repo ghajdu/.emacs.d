@@ -147,6 +147,12 @@
   (when (file-regular-p file)
     (load file)))
 
+;; Functions (load all files in defuns-dir)
+(setq defuns-dir (expand-file-name "my-defuns" emacs.d-directory))
+(dolist (file (directory-files defuns-dir t "\\w+"))
+  (when (file-regular-p file)
+    (load file)))
+
 (require 'expand-region)
 ;(require 'mark-more-like-this)
 ;(require 'inline-string-rectangle)
