@@ -4,7 +4,8 @@
 (global-set-key (kbd "C-x C-c") 'delete-frame)
 
 (global-set-key (kbd "M-s") 'save-buffer)
-(global-set-key (kbd "M-o") 'ido-find-file)
+(global-set-key (kbd "M-o") 'my-ido-find-resource)
+(global-set-key (kbd "s-r") 'my-ido-set-resource-root)
 
 ;; Set modifier keys
 (setq ns-alternate-modifier nil) ; alt
@@ -225,8 +226,12 @@
 ;(global-set-key (kbd "H-*") 'beginning-of-buffer) ;; H-p
 ;(global-set-key (kbd "H-n") 'end-of-buffer)
  
-;; Query replace regex key binding
-(global-set-key (kbd "M-&") 'query-replace-regexp)
+;; visual-regexp and visual-regexp-steroids
+;;(define-key global-map (kbd "C-c r") 'vr/replace)
+(define-key global-map (kbd "M-&") 'vr/query-replace)
+;; to use visual-regexp's isearch instead of the built-in regexp isearch, also include the following lines:
+(define-key global-map (kbd "C-r") 'vr/isearch-backward)
+(define-key global-map (kbd "C-s") 'vr/isearch-forward)
 
 ;; Yank selection in isearch
 ;(define-key isearch-mode-map (kbd "C-o") 'isearch-yank-selection)

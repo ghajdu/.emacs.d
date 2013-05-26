@@ -72,7 +72,8 @@
    (cons 'zencoding-mode melpa)
 ;   (cons 'gist melpa)
 ;   (cons 'htmlize melpa)
-;   (cons 'visual-regexp melpa)
+   (cons 'visual-regexp melpa)
+   (cons 'visual-regexp-steroids melpa)
 ;   (cons 'smartparens melpa)
 ;   (cons 'elisp-slime-nav melpa)
 ;   ;(cons 'elnode marmalade)
@@ -128,7 +129,8 @@
 ;(require 'mode-mappings)
 
 ;; Visual regexp
-;(require 'visual-regexp)
+(require 'visual-regexp)
+(require 'visual-regexp-steroids)
 ;(define-key global-map (kbd "M-&") 'vr/query-replace)
 ;(define-key global-map (kbd "M-/") 'vr/replace)
 
