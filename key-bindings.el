@@ -4,8 +4,8 @@
 (global-set-key (kbd "C-x C-c") 'delete-frame)
 
 (global-set-key (kbd "M-s") 'save-buffer)
+(global-set-key (kbd "M-O") 'my-ido-set-resource-root)
 (global-set-key (kbd "M-o") 'my-ido-find-resource)
-(global-set-key (kbd "s-r") 'my-ido-set-resource-root)
 
 ;; Set modifier keys
 (setq ns-alternate-modifier nil) ; alt
@@ -157,7 +157,7 @@
 ;(global-set-key (kbd "M-s e") 'sudo-edit)
 
 ;; Copy file path to kill ring
-;(global-set-key (kbd "C-x M-w") 'copy-current-file-path)
+(global-set-key "\C-cp" 'copy-full-path-to-kill-ring)
 
 ;; Window switching
 ;(windmove-default-keybindings) ;; Shift+direction

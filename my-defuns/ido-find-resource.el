@@ -1,7 +1,7 @@
 (require 'popup)
 
 (defvar my-ido-find-resource-root nil)
-(defvar my-ido-find-resource-filter "\\( -name \"lib\" -o -name \"*.git\" -o -name \"*.svn\" -o -name \"*.settings\" -o -name \"*target\" -o -name \"*classes\" \\) -prune -o -type f ! \\( -name \"*.class\" -o -name \"*.jar\" -o -name \".DS_Store\" -o -name \".classpath\" -o -name \".project\" \\)")
+(defvar my-ido-find-resource-filter "\\( -name \"lib\" -o -name \"*.git\" -o -name \"*.svn\" -o -name \"*.settings\" -o -name \"*target\" -o -name \"*node_modules\" -o -name \"*classes\" \\) -prune -o -type f ! \\( -name \"*.class\" -o -name \"*.jar\" -o -name \".DS_Store\" -o -name \".classpath\" -o -name \".project\" \\)")
 
 (defun my-ido-set-resource-root ()
   "Use ido to set the resource root."
@@ -12,7 +12,7 @@
   "Use ido to find a file from the resource root."
   (interactive)
   (unless my-ido-find-resource-root (my-ido-set-resource-root))
-  (defun find (root pattern prompt)
+  (defun my-ido-find (root pattern prompt)
     (let (resourceFiles tbl)
       ;; get resource files
       (setq resourceFiles 
@@ -39,8 +39,8 @@
 		(push key ido-list))
 	      resourceFiles)
 	;;(gethash (ido-completing-read prompt ido-list) tbl))))
-        (gethash (popup-menu* ido-list) tbl))))
-  (find-file (find my-ido-find-resource-root my-ido-find-resource-filter "Name:")))
+        (gethash (popup-menu* ido-list :isearch t :isearch-cursor-color "dark red") tbl))))
+  (find-file (my-ido-find my-ido-find-resource-root my-ido-find-resource-filter "Name:")))
 
 
 ;; bind keys for quick access
