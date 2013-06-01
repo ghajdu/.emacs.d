@@ -68,7 +68,9 @@
 (global-set-key (kbd "C-x r t") 'mc/edit-lines)
 
 ;; Quickly jump in document with ace-jump-mode
-;(define-key global-map (kbd "C-ø") 'ace-jump-mode)
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+;; enable a more powerful jump back function from ace jump mode
+(define-key global-map (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
 
 ;; Perform general cleanup.
 ;(global-set-key (kbd "C-c n") 'cleanup-buffer)
