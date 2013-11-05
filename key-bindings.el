@@ -201,6 +201,8 @@
 (key-chord-define-global ";;" "\C-e;")
 (key-chord-define-global ",." "{};\C-b\C-b")
 (key-chord-define-global ".-" "[]\C-b")
+(key-chord-define-global "\'\'" "''\C-b")
+(key-chord-define-global "\"\"" "\"\"\C-b")
 
 (global-set-key (kbd "C-c j") 'zencoding-expand-line)
 

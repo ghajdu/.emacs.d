@@ -25,7 +25,7 @@ File suffix is used to determine what program to run."
     (setq file-name (buffer-file-name))
     (setq file-ext (file-name-extension file-name))
     (setq prog-name (cdr (assoc file-ext ext-map)))
-    (setq cmd-str (concat prog-name " " file-name))
+    (setq cmd-str (concat prog-name " " "\"" file-name "\""))
     (shell-command cmd-str)))
 
 (provide 'run-current-file)
