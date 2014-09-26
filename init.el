@@ -105,6 +105,7 @@
 (eval-after-load 'auto-complete '(require 'setup-auto-complete))
 (require 'setup-ace-jump-mode)
 (require 'setup-ido)
+(require 'setup-clojure)
 (require 'setup-key-chord)
 (require 'setup-yasnippet)
 (require 'setup-zencoding-mode)
