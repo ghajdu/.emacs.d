@@ -108,6 +108,7 @@
 (require 'setup-ido)
 (require 'setup-clojure)
 (require 'setup-key-chord)
+(require 'setup-markdown-mode)
 (require 'setup-yasnippet)
 (require 'setup-zencoding-mode)
 ;(require 'setup-perspective)
