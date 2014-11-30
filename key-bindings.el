@@ -149,7 +149,7 @@
 
 ;; toggle two most recent buffers
 (fset 'quick-switch-buffer [?\C-x ?b return])
-(global-set-key (kbd "M-j") 'quick-switch-buffer)
+(global-set-key (kbd "C-b") 'quick-switch-buffer)
 
 ;; Revert without any fuss
 ;(global-set-key (kbd "M-<escape>")
@@ -351,5 +351,8 @@
 
 ;; Run current file
 (global-set-key (kbd "<f7>") 'run-current-file)
+
+;; Toggle window dedicated
+(global-set-key (kbd "C-c t") 'toggle-window-dedicated)
 
 (provide 'key-bindings)

@@ -1,7 +1,7 @@
 ;; Frame (window) size
 ;;(set-frame-parameter nil 'fullscreen 'fullboth)
-(add-to-list 'default-frame-alist '(width  . 90))
-(add-to-list 'default-frame-alist '(height . 45))
+(add-to-list 'default-frame-alist '(width  . 140))
+(add-to-list 'default-frame-alist '(height . 77))
 
 ;; Turn off mouse interface early in startup to avoid momentary display
 ;;(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
@@ -69,6 +69,7 @@
    (cons 'key-chord melpa)
    (cons 'magit melpa)
    (cons 'move-text melpa)
+   (cons 'restclient melpa)
    (cons 'zencoding-mode melpa)
 ;   (cons 'gist melpa)
 ;   (cons 'htmlize melpa)
@@ -171,6 +172,7 @@
 (require 'my-misc)
 (require 'run-current-file)
 (require 'sort-and-delete-duplicate-lines)
+(require 'toggle-window-dedicated)
 
 ;
 ;; Fill column indicator
