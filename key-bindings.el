@@ -135,7 +135,7 @@
 (define-key global-map (kbd "C-x C-n") 'make-frame-command)
 
 ;; Jump to a definition in the current file. (This is awesome)
-;(global-set-key (kbd "C-x C-i") 'ido-imenu)
+(global-set-key (kbd "C-x C-i") 'ido-imenu)
 
 ;; File finding
 ;(global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
@@ -182,7 +182,7 @@
 ;(global-set-key (kbd "C-c C-e") 'eval-and-replace)
 
 ;; Navigation bindings
-;(global-set-key [remap goto-line] 'goto-line-with-feedback)
+(global-set-key [remap goto-line] 'goto-line-with-feedback)
 
 ;(global-set-key (kbd "<prior>") 'beginning-of-buffer)
 ;(global-set-key (kbd "<home>") 'beginning-of-buffer)
@@ -196,6 +196,9 @@
 ;(global-set-key (kbd "M-<left>") 'smart-backward)
 ;(global-set-key (kbd "M-<right>") 'smart-forward)
 
+;; Find files by name and display results in dired
+;(global-set-key (kbd "M-s f") 'find-name-dired)
+(key-chord-define-global "ff" 'find-name-dired)
 (key-chord-define-global "fg" 'iy-go-to-char)
 (key-chord-define-global "df" 'iy-go-to-char-backward)
 (key-chord-define-global ";;" "\C-e;")
@@ -234,8 +237,8 @@
 ;;(define-key global-map (kbd "C-c r") 'vr/replace)
 (define-key global-map (kbd "M-&") 'vr/query-replace)
 ;; to use visual-regexp's isearch instead of the built-in regexp isearch, also include the following lines:
-(define-key global-map (kbd "C-r") 'vr/isearch-backward)
-(define-key global-map (kbd "C-s") 'vr/isearch-forward)
+;(define-key global-map (kbd "C-r") 'vr/isearch-backward)
+;(define-key global-map (kbd "C-s") 'vr/isearch-forward)
 
 ;; Yank selection in isearch
 ;(define-key isearch-mode-map (kbd "C-o") 'isearch-yank-selection)
@@ -248,7 +251,7 @@
 ;(global-set-key (kbd "C-c C-k") 'eval-buffer)
 
 ;; Create scratch buffer
-;(global-set-key (kbd "C-c b") 'create-scratch-buffer)
+(global-set-key (kbd "C-c b") 'create-scratch-buffer)
 
 ;; Move windows, even in org-mode
 (global-set-key (kbd "<S-right>") 'windmove-right)
@@ -314,9 +317,6 @@
 
 ;; Display and edit occurances of regexp in buffer
 (global-set-key (kbd "C-c o") 'occur)
-
-;; Find files by name and display results in dired
-;(global-set-key (kbd "M-s f") 'find-name-dired)
 
 ;; Find file in project
 ;(global-set-key (kbd "C-x o") 'find-file-in-project)

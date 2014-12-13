@@ -18,12 +18,47 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
-;; '(desktop-save (quote ask))
-;; '(desktop-save-mode t)
+ '(ibuffer-formats
+   (quote
+    ((mark modified read-only " "
+           (name 30 30 :left :elide)
+           " " filename-and-process)
+     (mark modified read-only " "
+           (name))
+     (mark modified read-only " "
+           (name 18 18 :left :elide)
+           " "
+           (size 9 -1 :right)
+           " "
+           (mode 16 16 :left :elide)
+           " " filename-and-process)
+     (mark " "
+           (name 16 -1)
+           " " filename))))
  '(ido-use-filename-at-point nil)
  '(initial-scratch-message nil)
  '(nxml-child-indent 4)
  '(nxml-outline-child-indent 4)
- '(safe-local-variable-values (quote ((eval font-lock-add-keywords nil (quote (("defexamples\\|def-example-group\\| => " (0 (quote font-lock-keyword-face)))))) (eval when (and (buffer-file-name) (file-regular-p (buffer-file-name)) (string-match-p "^[^.]" (buffer-file-name))) (emacs-lisp-mode)) (eval font-lock-add-keywords nil (quote (("defexamples\\| => " (0 (quote font-lock-keyword-face)))))) (encoding . utf-8))))
- '(shell-file-name "bash")
+ '(safe-local-variable-values
+   (quote
+    ((eval font-lock-add-keywords nil
+           (quote
+            (("defexamples\\|def-example-group\\| => "
+              (0
+               (quote font-lock-keyword-face))))))
+     (eval when
+           (and
+            (buffer-file-name)
+            (file-regular-p
+             (buffer-file-name))
+            (string-match-p "^[^.]"
+                            (buffer-file-name)))
+           (emacs-lisp-mode))
+     (eval font-lock-add-keywords nil
+           (quote
+            (("defexamples\\| => "
+              (0
+               (quote font-lock-keyword-face))))))
+     (encoding . utf-8))))
+ '(shell-file-name "/bin/zsh")
  '(tool-bar-mode nil))
