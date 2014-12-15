@@ -24,7 +24,7 @@
     (let ((type (car property)) (name (car (cdr property))))
       (concat (indent indentLevel) "public " className " " name "(" type " " name  ") {\n"
               (indent (+ 1 indentLevel)) "this." name " = " name ";\n"
-              (indent (+ 1 indentLevel)) "return " className ";\n"
+              (indent (+ 1 indentLevel)) "return this;\n"
               (indent indentLevel) "}")))
   (if properties
       (concat (setter indentLevel className (car properties)) "\n" (setters indentLevel className (cdr properties)))
@@ -77,16 +77,21 @@
 
 
 (defun mbj/builder()
+  "
+Insert a java builder pattern class in buffer based on region looking like:
+Myclass
+String foo
+int bar
+"
   (interactive)
-  ;;  (let ((lines (delete-and-extract-region (region-beginning) (region-end))))
   (let ((regionLines (filter-buffer-substring (region-beginning) (region-end) t)))
     (setq lines (split-string regionLines "\n" t " +"))
     (setq className (car lines))
     (setq properties (parseProperties (cdr lines)))
     (message className))
-                                        ;(message "%S" properties)))
   (insert (class 0 className properties)))
 
+(provide 'builder-pattern-java)
 
 ;(field 4 '("String" "foo"))
 ;(fields 4 '(("String" "foo") ("int" "bar")))
