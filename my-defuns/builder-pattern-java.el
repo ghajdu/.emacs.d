@@ -72,19 +72,19 @@
           (builder (+ 1 indentLevel) className properties) "\n"
           (indent indentLevel) "}"))
 
-(defun mbj/builder()
+(defun mbj/builder(beg end)
   "
 Insert a java builder pattern class in buffer based on region looking like:
 Myclass
 String foo
 int bar
 "
-  (interactive)
+  (interactive "*r")
   (defun parseProperties(propertyLines)
     (if propertyLines
         (cons (split-string (car propertyLines) " ") (parseProperties(cdr propertyLines)))
       '()))  
-  (let ((regionLines (filter-buffer-substring (region-beginning) (region-end) t)))
+  (let ((regionLines (filter-buffer-substring beg end t)))
     (setq lines (split-string regionLines "\n" t " +"))
     (setq className (car lines))
     (setq properties (parseProperties (cdr lines)))
