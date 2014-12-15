@@ -61,7 +61,7 @@
                     (body indentLevel (cdr properties) "\n")))
         ""))
 
-    (concat (indent indentLevel) "public " className "(" (args properties "")  ") {\n"
+    (concat (indent indentLevel) "private " className "(" (args properties "")  ") {\n"
             (body (+ 1 indentLevel) properties "") "\n"
             (indent indentLevel) "}\n"))
 
@@ -85,11 +85,10 @@ int bar
         (cons (split-string (car propertyLines) " ") (parseProperties(cdr propertyLines)))
       '()))
   (save-excursion
-    (let ((regionLines (filter-buffer-substring beg end t)))
-      (setq lines (split-string regionLines "\n" t " +"))
-      (setq className (car lines))
-      (setq properties (parseProperties (cdr lines)))
-      (message className))
-    (insert (mbj/java-pojo 0 className properties))))
+    (let* ((regionLines (filter-buffer-substring beg end t))
+           (lines (split-string regionLines "\n" t " +"))
+           (className (car lines))
+           (properties (parseProperties (cdr lines))))          
+      (insert (mbj/java-pojo 0 className properties)))))
 
 (provide 'builder-pattern-java)
