@@ -1,21 +1,3 @@
-(defun slask()
-  "builder pattern"
-  (interactive)
-  (save-excursion
-    (goto-char (region-beginning))
-    (setq currentLine (thing-at-point 'line))
-    ;;(insert (mbj/getter "String" "foo"))
-    (message (mbj/getter "String" "foo"))
-    (message "\n")
-    (message (mbj/setter "String" "foo"))
-    (message "\n")
-    (insert (mbj/builder "MyClass" '("foo" "bar" "baz")))))
-    ;;(insert (mbj/builder "MyClass" '()))))
-    ;;(insert currentLine)
-    ;;(kill-line)
-    ;;(message (concat (number-to-string (region-beginning)) "###" (number-to-string (region-end))))))
-
-
 (defun indent(level)
   (make-string (* 4 level) ?\s))
 
@@ -51,7 +33,7 @@
 (defun builder(indentLevel className properties)
   (defun propertyNames(properties delimiter)
     (if properties
-        (concat delimiter (car (cdr (car properties))) (propertyNames (cdr properties) " "))
+        (concat delimiter (car (cdr (car properties))) (propertyNames (cdr properties) ", "))
       ""))
   (defun build(indentLevel className properties)
     (concat (indent indentLevel) "public " className " build() {\n"
@@ -85,13 +67,35 @@
           (builder (+ 1 indentLevel) className properties) "\n"
           (indent indentLevel) "}"))
 
-;;(field 4 '("String" "foo"))
-(fields 4 '(("String" "foo") ("int" "bar")))
-;;(getter 4 '("String" "foo"))
-(getters 4 '(("String" "foo") ("int" "bar")))
-;;(setter 4 "MyClass" '("String" "foo"))
-(setters 4 "MyClass" '(("String" "foo") ("int" "bar")))
-(builder 4 "MyClass" '(("String" "foo") ("int" "bar")))
+(defun parseProperties(propertyLines)
+  (if propertyLines
+      (cons (split-string (car propertyLines) " ") (parseProperties(cdr propertyLines)))
+    '()))
 
-(insert (builder 4 "MyClass" '(("String" "foo") ("int" "bar"))))
-(insert (class 0 "MyClass" '(("String" "foo") ("int" "bar"))))
+(parseProperties '("String foo" "int bar"))
+(cons (split-string (car '("String foo" "int bar"))) '())
+
+
+(defun mbj/builder()
+  (interactive)
+  ;;  (let ((lines (delete-and-extract-region (region-beginning) (region-end))))
+  (let ((regionLines (filter-buffer-substring (region-beginning) (region-end) t)))
+    (setq lines (split-string regionLines "\n" t " +"))
+    (setq className (car lines))
+    (setq properties (parseProperties (cdr lines)))
+    (message className))
+                                        ;(message "%S" properties)))
+  (insert (class 0 className properties)))
+
+
+;(field 4 '("String" "foo"))
+;(fields 4 '(("String" "foo") ("int" "bar")))
+;(getter 4 '("String" "foo"))
+;(getters 4 '(("String" "foo") ("int" "bar")))
+;(setter 4 "MyClass" '("String" "foo"))
+;(setters 4 "MyClass" '(("String" "foo") ("int" "bar")))
+;(builder 4 "MyClass" '(("String" "foo") ("int" "bar")))
+
+;(insert (builder 4 "MyClass" '(("String" "foo") ("int" "bar"))))
+;(insert (class 0 "MyClass" '(("String" "foo") ("int" "bar"))))
+;(class 0 "MyClass" '(("String" "foo") ("int" "bar")))
