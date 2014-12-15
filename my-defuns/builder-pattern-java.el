@@ -11,7 +11,7 @@
       ""))
 
   (defun getters(indentLevel properties)
-    (defun getter(indent property)
+    (defun getter(indentLevel property)
       (let ((type (car property)) (name (car (cdr property))))
         (concat (indent indentLevel)  "public " type " get" (capitalize name) "() {\n"
                 (indent (+ 1 indentLevel)) "return " name ";\n"
@@ -83,12 +83,13 @@ int bar
   (defun parseProperties(propertyLines)
     (if propertyLines
         (cons (split-string (car propertyLines) " ") (parseProperties(cdr propertyLines)))
-      '()))  
-  (let ((regionLines (filter-buffer-substring beg end t)))
-    (setq lines (split-string regionLines "\n" t " +"))
-    (setq className (car lines))
-    (setq properties (parseProperties (cdr lines)))
-    (message className))
-  (insert (mbj/java-pojo 0 className properties)))
+      '()))
+  (save-excursion
+    (let ((regionLines (filter-buffer-substring beg end t)))
+      (setq lines (split-string regionLines "\n" t " +"))
+      (setq className (car lines))
+      (setq properties (parseProperties (cdr lines)))
+      (message className))
+    (insert (mbj/java-pojo 0 className properties))))
 
 (provide 'builder-pattern-java)
