@@ -109,7 +109,7 @@
 ;(global-set-key (kbd "M-W") '(lambda () (interactive) (save-region-or-current-line 1)))
 
 ;; Make shell more convenient, and suspend-frame less
-(global-set-key (kbd "C-z") 'shell)
+;;(global-set-key (kbd "C-z") 'shell)
 (global-set-key (kbd "C-x M-z") 'suspend-frame)
 
 ;; Zap to char
@@ -149,7 +149,8 @@
 
 ;; toggle two most recent buffers
 (fset 'quick-switch-buffer [?\C-x ?b return])
-(global-set-key (kbd "C-b") 'quick-switch-buffer)
+;;(global-set-key (kbd "C-b") 'quick-switch-buffer)
+(global-set-key (kbd "C-z") 'quick-switch-buffer)
 
 ;; Revert without any fuss
 ;(global-set-key (kbd "M-<escape>")
