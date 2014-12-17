@@ -224,5 +224,4 @@
 ;(when (file-exists-p user-settings-dir)
 ;  (mapc 'load (directory-files user-settings-dir nil "^[^#].*el$")))
 
-
-
+(show-paren-mode 1)

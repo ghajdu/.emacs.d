@@ -1,76 +1,143 @@
-(defun mbj/java-pojo(indentLevel className properties)
-  (defun indent(level)
-    (make-string (* 4 level) ?\s))
+(defun mbj/java-pojo(properties indent indentLevel className)
+  (defun indent(indent level)
+    (make-string (* indent level) ?\s))
+
+  (defun property-to-replacements(property)
+    (list
+     (list "##type##" (car property))
+     (list "##name##" (cadr property)) (list "##Name##" (capitalize (cadr property)))))
   
-  (defun fields(indentLevel properties)
-    (defun field(indentLevel property)
-      (let ((type (car property)) (name (car (cdr property))))
-        (concat (indent indentLevel) "private " type " " name ";")))
-    (if properties
-        (concat (field indentLevel (car properties)) "\n" (fields indentLevel (cdr properties)))
-      ""))
+  (defun apply-template(template replacements indent indentLevel)
+    (defun inner(template replacements indent indentLevel)
+      (if replacements
+          (let ((replacement (car replacements))
+                (case-fold-search nil)) ;; To make replace case sensitive
+            (replace-regexp-in-string
+             (car replacement)
+             (cadr replacement)
+             (inner template (cdr replacements) indent indentLevel)))
+        template))
+    (replace-regexp-in-string
+     "##indent##"
+     (indent indent 1)
+     (replace-regexp-in-string
+      "^"
+      (indent indent indentLevel)
+      (inner template replacements indent indentLevel))))
 
-  (defun getters(indentLevel properties)
-    (defun getter(indentLevel property)
-      (let ((type (car property)) (name (car (cdr property))))
-        (concat (indent indentLevel)  "public " type " get" (capitalize name) "() {\n"
-                (indent (+ 1 indentLevel)) "return " name ";\n"
-                (indent indentLevel) "}")))
-    (if properties
-        (concat (getter indentLevel (car properties)) "\n" (getters indentLevel (cdr properties)))
-      ""))
-
-  (defun builder(indentLevel className properties)
-    (defun propertyNames(properties delimiter)
+  (defun apply-for-each(func delimiter properties args)
+    (defun afe-inner(func innerDelimiter properties args)
       (if properties
-          (concat delimiter (car (cdr (car properties))) (propertyNames (cdr properties) ", "))
+          (concat innerDelimiter
+                  (apply func (car properties) args)
+                  (afe-inner func delimiter (cdr properties) args))
         ""))
+    (afe-inner func "" properties args))
 
-    (defun setters(indentLevel className properties)
-      (defun setter(indent className property)
-        (let ((type (car property)) (name (car (cdr property))))
-          (concat (indent indentLevel) "public " className " " name "(" type " " name  ") {\n"
-                  (indent (+ 1 indentLevel)) "this." name " = " name ";\n"
-                  (indent (+ 1 indentLevel)) "return this;\n"
-                  (indent indentLevel) "}")))
-      (if properties
-          (concat (setter indentLevel className (car properties)) "\n" (setters indentLevel className (cdr properties)))
-        ""))    
+  (defun field(property indent indentLevel)
+    (apply-template
+     "private ##type## ##name##;"
+     (property-to-replacements property)
+     indent
+     indentLevel))
 
-    (defun build(indentLevel className properties)
-      (concat (indent indentLevel) "public " className " build() {\n"
-              (indent (+ 1 indentLevel)) "return new " className "(" (propertyNames properties "") ");\n"
-              (indent indentLevel) "}\n"))
+  (defun fields(properties indent indentLevel delimiter)
+    (apply-for-each #'field delimiter properties (list indent indentLevel)))
 
-    (concat (indent indentLevel) "public static class Builder {\n"
-            (fields (+ 1 indentLevel) properties)
-            (setters (+ 1 indentLevel) "Builder" properties)
-            (build (+ 1 indentLevel) className properties)          
-            (indent indentLevel) "}"))  
+  (defun getter(property indent indentLevel)
+    (apply-template
+     (concat "public ##type## get##Name##() {\n"
+             "##indent##return ##name##;\n"
+             "}")     
+     (property-to-replacements property)
+     indent
+     indentLevel))
 
-  (defun constructor(indentLevel className properties)
-    (defun args(properties delimiter)
-      (if properties
-          (concat delimiter (car (car properties)) " " (car (cdr (car properties))) (args (cdr properties) ", "))
-        ""))
+  (defun getters(properties indent indentLevel delimiter)
+    (apply-for-each #'getter delimiter properties (list indent indentLevel)))
 
-    (defun body(indentLevel properties delimiter)
-      (if properties
-          (let ((name (car (cdr (car properties)))))
-            (concat delimiter (indent indentLevel) "this." name " = " name ";"
-                    (body indentLevel (cdr properties) "\n")))
-        ""))
+  (defun setter(property indent indentLevel className)
+    (apply-template
+     (concat "public ##className## ##name##(##type## ##name##) {\n"
+             "##indent##this.##name## = ##name##;\n"
+             "##indent##return this;\n"
+             "}")     
+     (cons (list "##className##" className) (property-to-replacements property))
+     indent
+     indentLevel))
 
-    (concat (indent indentLevel) "private " className "(" (args properties "")  ") {\n"
-            (body (+ 1 indentLevel) properties "") "\n"
-            (indent indentLevel) "}\n"))
+  (defun setters(properties indent indentLevel delimiter className)
+    (apply-for-each #'setter delimiter properties (list indent indentLevel className)))
 
-  (concat (indent indentLevel) "public class " className " {\n"
-          (fields (+ 1 indentLevel) properties)
-          (constructor (+ 1 indentLevel) className properties)
-          (getters (+ 1 indentLevel) properties)
-          (builder (+ 1 indentLevel) className properties) "\n"
-          (indent indentLevel) "}"))
+  (defun build(properties indent indentLevel className)
+    (apply-template
+     (concat "public ##className## build() {\n"
+             "##indent##return new ##className##(##arguments##);\n"
+             "}")     
+     (list (list "##arguments##" (apply-for-each (lambda(property indent indentLevel)
+                                                   (cadr property))
+                                                 ", "
+                                                 properties
+                                                 (list indent indentLevel)))
+           (list "##className##" className))
+     indent
+     indentLevel))
+
+  (defun builder(properties indent indentLevel className)
+    (concat
+     (apply-template
+      "public class Builder {"
+      '()
+      indent
+      indentLevel)
+     "\n"
+     (fields properties indent (+ 1 indentLevel) "\n")
+     "\n\n"
+     (setters properties indent (+ 1 indentLevel) "\n\n" "Builder")
+     "\n\n"
+     (build properties indent (+ 1 indentLevel) className)
+     "\n"
+     (indent indent indentLevel) "}"))
+
+  (defun constructor(properties indent indentLevel className)
+    (apply-template
+     (concat "private ##className##(##arguments##) {\n"
+             "##body##\n"
+             "}")     
+     (list (list "##arguments##" (apply-for-each (lambda(property indent indentLevel)
+                                                   (concat (car property) " " (cadr property)))
+                                                 ", "
+                                                 properties
+                                                 (list indent indentLevel)))
+           (list "##body##" (apply-for-each (lambda(property indent indentLevel)
+                                              (apply-template
+                                               "this.##name## = ##name##;"
+                                               (property-to-replacements property)
+                                               indent
+                                               1))
+                                            "\n"
+                                            properties
+                                            (list indent indentLevel)))
+           (list "##className##" className))
+     indent
+     indentLevel))
+
+  (concat
+   (apply-template
+    "public class ##className## {"
+    (list (list "##className##" className))
+    indent
+    indentLevel)
+   "\n"
+   (fields properties indent (+ 1 indentLevel) "\n")
+   "\n\n"
+   (constructor properties indent (+ 1 indentLevel) className)
+   "\n\n"
+   (getters properties indent (+ 1 indentLevel) "\n\n")
+   "\n\n"
+   (builder properties indent (+ 1 indentLevel) className)
+   "\n"
+   (indent indent indentLevel) "}"))
 
 (defun mbj/builder(beg end)
   "
@@ -89,6 +156,15 @@ int bar
            (lines (split-string regionLines "\n" t " +"))
            (className (car lines))
            (properties (parseProperties (cdr lines))))          
-      (insert (mbj/java-pojo 0 className properties)))))
+      (insert (mbj/java-pojo properties 4 0 className)))))
 
 (provide 'builder-pattern-java)
+
+;; (field '("String" "bar") 4 1)
+;; (fields '(("String" "bar") ("int" "foo") ("Object" "baz")) 4 1 "\n")
+;; (getters '(("String" "bar") ("int" "foo") ("Object" "baz")) 4 1 "\n\n")
+;; (setters '(("String" "bar") ("int" "foo") ("Object" "baz")) 4 1 "\n\n" "MyClass")
+;; (build '(("String" "bar") ("int" "foo") ("Object" "baz")) 4 1 "MyClass")
+;; (constructor '(("String" "bar") ("int" "foo") ("Object" "baz")) 4 1 "MyClass")
+;; (builder '(("String" "bar") ("int" "foo") ("Object" "baz")) 4 1 "MyClass")
+;; (mbj/java-pojo '(("String" "bar") ("int" "foo") ("Object" "baz")) 4 2 "MyClass")
