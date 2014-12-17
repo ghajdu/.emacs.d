@@ -1,23 +1,12 @@
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "Black" :foreground "White" :inverse-video nil :box nil :strike-t*hrough nil :overline nil :underline nil :slant normal :weight normal :width normal :height 105))))
- '(diff-refine-change ((t (:background "midnight blue"))))
- '(highlight ((((class color) (min-colors 88) (background dark)) (:background "#111111"))))
- '(initial-buffer-choice t)
- '(js2-function-param-face ((t (:foreground "LightGoldenrod"))))
- '(mumamo-background-chunk-submode ((((class color) (min-colors 88) (background dark)) nil)))
- '(show-paren-match ((nil (:background "#333399"))))
- '(show-paren-mismatch ((((class color)) (:background "red")))))
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
+ '(custom-safe-themes
+   (quote
+    ("c03d60937e814932cd707a487676875457e0b564a615c1edfd453f23b06fe879" "9527feeeec43970b1d725bdc04e97eb2b03b15be982ac50089ad223d3c6f2920" default)))
  '(ibuffer-formats
    (quote
     ((mark modified read-only " "
@@ -62,3 +51,9 @@
      (encoding . utf-8))))
  '(shell-file-name "/bin/zsh")
  '(tool-bar-mode nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

@@ -60,6 +60,7 @@
 ;   (cons 'exec-path-from-shell melpa)
 ;   (cons 'paredit melpa)
    (cons 'auto-complete melpa)
+   (cons 'diminish melpa)   
    (cons 'git-commit-mode melpa)
    (cons 'gitconfig-mode melpa)
    (cons 'gitignore-mode melpa)
@@ -88,6 +89,9 @@
   (error
    (package-refresh-contents)
    (init--install-packages)))
+
+;; Set up appearance early
+(require 'appearance)
 
 ;; Lets start with a smattering of sanity
 (require 'sane-defaults)
@@ -224,4 +228,3 @@
 ;(when (file-exists-p user-settings-dir)
 ;  (mapc 'load (directory-files user-settings-dir nil "^[^#].*el$")))
 
-(show-paren-mode 1)
