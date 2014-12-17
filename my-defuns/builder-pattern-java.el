@@ -2,20 +2,20 @@
   (defun indent(indent level)
     (make-string (* indent level) ?\s))
 
-  (defun property-to-replacements(property)
+  (defun to-replacements(property)
     (list
      (list "##type##" (car property))
      (list "##name##" (cadr property)) (list "##Name##" (capitalize (cadr property)))))
   
   (defun apply-template(template replacements indent indentLevel)
-    (defun inner(template replacements indent indentLevel)
+    (defun at-inner(template replacements indent indentLevel)
       (if replacements
           (let ((replacement (car replacements))
                 (case-fold-search nil)) ;; To make replace case sensitive
             (replace-regexp-in-string
              (car replacement)
              (cadr replacement)
-             (inner template (cdr replacements) indent indentLevel)))
+             (at-inner template (cdr replacements) indent indentLevel)))
         template))
     (replace-regexp-in-string
      "##indent##"
@@ -23,7 +23,7 @@
      (replace-regexp-in-string
       "^"
       (indent indent indentLevel)
-      (inner template replacements indent indentLevel))))
+      (at-inner template replacements indent indentLevel))))
 
   (defun apply-for-each(func delimiter properties args)
     (defun afe-inner(func innerDelimiter properties args)
@@ -37,7 +37,7 @@
   (defun field(property indent indentLevel)
     (apply-template
      "private ##type## ##name##;"
-     (property-to-replacements property)
+     (to-replacements property)
      indent
      indentLevel))
 
@@ -49,7 +49,7 @@
      (concat "public ##type## get##Name##() {\n"
              "##indent##return ##name##;\n"
              "}")     
-     (property-to-replacements property)
+     (to-replacements property)
      indent
      indentLevel))
 
@@ -62,7 +62,7 @@
              "##indent##this.##name## = ##name##;\n"
              "##indent##return this;\n"
              "}")     
-     (cons (list "##className##" className) (property-to-replacements property))
+     (cons (list "##className##" className) (to-replacements property))
      indent
      indentLevel))
 
@@ -85,11 +85,7 @@
 
   (defun builder(properties indent indentLevel className)
     (concat
-     (apply-template
-      "public class Builder {"
-      '()
-      indent
-      indentLevel)
+     (indent indent indentLevel) "public class Builder {"
      "\n"
      (fields properties indent (+ 1 indentLevel) "\n")
      "\n\n"
@@ -112,7 +108,7 @@
            (list "##body##" (apply-for-each (lambda(property indent indentLevel)
                                               (apply-template
                                                "this.##name## = ##name##;"
-                                               (property-to-replacements property)
+                                               (to-replacements property)
                                                indent
                                                1))
                                             "\n"
@@ -123,11 +119,7 @@
      indentLevel))
 
   (concat
-   (apply-template
-    "public class ##className## {"
-    (list (list "##className##" className))
-    indent
-    indentLevel)
+   (indent indent indentLevel) "public class " className " {"
    "\n"
    (fields properties indent (+ 1 indentLevel) "\n")
    "\n\n"
