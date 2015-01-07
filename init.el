@@ -1,7 +1,7 @@
 ;; Frame (window) size
 ;;(set-frame-parameter nil 'fullscreen 'fullboth)
-(add-to-list 'default-frame-alist '(width  . 140))
-(add-to-list 'default-frame-alist '(height . 77))
+(add-to-list 'default-frame-alist '(width  . 114))
+(add-to-list 'default-frame-alist '(height . 71))
 
 ;; Turn off mouse interface early in startup to avoid momentary display
 ;;(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
@@ -34,7 +34,7 @@
 
 ;; Write backup files to own directory
 (setq backup-directory-alist
-      `(("." . ,(expand-file-name
+      `((".*" . ,(expand-file-name
                  (concat user-emacs-directory "backups")))))
 
 ;; Make backups of files, even when they're in version control
@@ -58,7 +58,7 @@
 (defun init--install-packages ()
   (packages-install
 ;   (cons 'exec-path-from-shell melpa)
-;   (cons 'paredit melpa)
+   (cons 'paredit melpa)
    (cons 'auto-complete melpa)
    (cons 'diminish melpa)   
    (cons 'git-commit-mode melpa)
@@ -113,6 +113,8 @@
 (require 'setup-clojure)
 (require 'setup-key-chord)
 (require 'setup-markdown-mode)
+(require 'setup-org)
+(require 'setup-paredit)
 (require 'setup-yasnippet)
 (require 'setup-zencoding-mode)
 ;(require 'setup-perspective)

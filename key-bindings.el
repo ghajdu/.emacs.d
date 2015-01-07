@@ -356,4 +356,11 @@
 ;; Toggle window dedicated
 (global-set-key (kbd "C-c t") 'toggle-window-dedicated)
 
+;; Toggle between source and test in other window
+(eval-after-load 'js2-mode
+  '(define-key js2-mode-map (kbd "C-c C-j") 'jump-between-source-and-test-files-other-window))
+
+;; Switch to next frame
+(global-set-key (kbd "M-§") 'ns-next-frame)
+
 (provide 'key-bindings)
