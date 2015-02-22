@@ -363,4 +363,12 @@
 ;; Switch to next frame
 (global-set-key (kbd "M-§") 'ns-next-frame)
 
+;; Dired
+(setq dired-listing-switches "-alh")
+
+(add-hook
+ 'dired-mode-hook
+ (lambda ()
+   (define-key dired-mode-map (kbd "ö") 'dired-up-directory)))
+
 (provide 'key-bindings)

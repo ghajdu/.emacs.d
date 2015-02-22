@@ -7,6 +7,7 @@
  '(custom-safe-themes
    (quote
     ("c03d60937e814932cd707a487676875457e0b564a615c1edfd453f23b06fe879" "9527feeeec43970b1d725bdc04e97eb2b03b15be982ac50089ad223d3c6f2920" default)))
+ '(dired-listing-switches "-al")
  '(ibuffer-formats
    (quote
     ((mark modified read-only " "
