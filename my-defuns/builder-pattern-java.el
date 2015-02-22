@@ -85,7 +85,7 @@
 
   (defun builder(properties indent indentLevel className)
     (concat
-     (indent indent indentLevel) "public class Builder {"
+     (indent indent indentLevel) "public static class Builder {"
      "\n"
      (fields properties indent (+ 1 indentLevel) "\n")
      "\n\n"

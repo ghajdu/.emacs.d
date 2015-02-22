@@ -51,6 +51,9 @@
 ;; Setup elnode before packages to stop it from starting a server
 (require 'setup-elnode)
 
+;; Control versions of packages
+(setq package-load-list '((cider "0.8.2") all))
+
 ;; Setup packages
 (require 'setup-package)
 
@@ -68,10 +71,12 @@
    (cons 'js2-mode melpa)
    (cons 'js2-refactor melpa)
    (cons 'key-chord melpa)
+   (cons 'less-css-mode melpa)   
    (cons 'magit melpa)
    (cons 'move-text melpa)
    (cons 'restclient melpa)
    (cons 'zencoding-mode melpa)
+   (cons 'scss-mode melpa)   
 ;   (cons 'gist melpa)
 ;   (cons 'htmlize melpa)
    (cons 'visual-regexp melpa)
@@ -114,7 +119,8 @@
 (require 'setup-key-chord)
 (require 'setup-markdown-mode)
 (require 'setup-org)
-(require 'setup-paredit)
+(require 'setup-scss)
+;(require 'setup-paredit)
 (require 'setup-yasnippet)
 (require 'setup-zencoding-mode)
 ;(require 'setup-perspective)

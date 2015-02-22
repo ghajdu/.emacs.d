@@ -11,4 +11,9 @@
 ;;(add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
 ;;(add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
 
+;; Use the same ns for src and test
+(setq cider-test-infer-test-ns
+      (lambda (ns)
+        ns))
+
 (provide 'setup-clojure)

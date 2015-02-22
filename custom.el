@@ -28,6 +28,7 @@
  '(initial-scratch-message nil)
  '(nxml-child-indent 4)
  '(nxml-outline-child-indent 4)
+ '(org-babel-load-languages (quote ((js . t) (emacs-lisp . t))))
  '(safe-local-variable-values
    (quote
     ((eval font-lock-add-keywords nil
