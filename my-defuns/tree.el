@@ -12,6 +12,7 @@ Inserts a tree listing of the specified dir in current buffer)
           (tree (car absolute-files) (concat "| " prefix)))
         (setq files (cdr files))
         (setq absolute-files (cdr absolute-files)))))
-  (tree dir "|____"))
+  (save-excursion
+    (tree dir "|____")))
 
 (provide 'mbj/tree)
