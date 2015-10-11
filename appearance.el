@@ -18,7 +18,8 @@
   (load-theme 'default-black))
 
 ;; (use-default-theme)
-(load-theme 'leuven)
+(when is-mac 
+  (load-theme 'leuven))
 
 ;; org-mode colors
 ;; (setq org-todo-keyword-faces
@@ -45,7 +46,7 @@
 ;; (eval-after-load "guide-key" '(diminish 'guide-key-mode))
 (eval-after-load "magit" '(diminish 'magit-auto-revert-mode))
 ;; (eval-after-load "whitespace-cleanup-mode" '(diminish 'whitespace-cleanup-mode))
-(eval-after-load "subword" '(diminish 'subword-mode))
+(when is-mac (eval-after-load "subword" '(diminish 'subword-mode)))
 
 (defmacro rename-modeline (package-name mode new-name)
   `(eval-after-load ,package-name

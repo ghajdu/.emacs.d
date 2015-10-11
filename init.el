@@ -35,10 +35,14 @@
 ;; Write backup files to own directory
 (setq backup-directory-alist
       `((".*" . ,(expand-file-name
-                 (concat user-emacs-directory "backups")))))
+                  (concat user-emacs-directory "backups")))))
 
 ;; Make backups of files, even when they're in version control
 (setq vc-make-backup-files t)
+
+;; Write auto-save files to own directory
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 
 ;; Save point position between sessions
 (require 'saveplace)
@@ -67,6 +71,7 @@
    (cons 'git-commit-mode melpa)
    (cons 'gitconfig-mode melpa)
    (cons 'gitignore-mode melpa)
+   (cons 'groovy-mode melpa)
    (cons 'iy-go-to-char melpa)
    (cons 'js2-mode melpa)
    (cons 'js2-refactor melpa)
@@ -236,3 +241,8 @@
 ;(when (file-exists-p user-settings-dir)
 ;  (mapc 'load (directory-files user-settings-dir nil "^[^#].*el$")))
 
+;; Configures indentation of groovy, java, C and related modes all at once
+(defun my-c-mode-hook () 
+  (setq indent-tabs-mode nil 
+        c-basic-offset 4)) 
+(add-hook 'c-mode-common-hook 'my-c-mode-hook) 
