@@ -2,10 +2,17 @@
   (defun indent(indent level)
     (make-string (* indent level) ?\s))
 
+  (defun downcase-firstletter (s)
+    (concat (downcase (substring s 0 1)) (substring s 1)))
+
+  (defun upcase-firstletter (s)
+    (concat (upcase (substring s 0 1)) (substring s 1)))  
+
   (defun to-replacements(property)
     (list
      (list "##type##" (car property))
-     (list "##name##" (cadr property)) (list "##Name##" (capitalize (cadr property)))))
+     (list "##name##" (cadr property))
+     (list "##Name##" (upcase-firstletter (cadr property)))))
   
   (defun apply-template(template replacements indent indentLevel)
     (defun at-inner(template replacements indent indentLevel)
@@ -46,84 +53,109 @@
 
   (defun getter(property indent indentLevel)
     (apply-template
-     (concat "public ##type## get##Name##() {\n"
+     (concat "public ##type## ##getOrIs####Name##() {\n"
              "##indent##return ##name##;\n"
              "}")     
-     (to-replacements property)
+     (cons (list "##getOrIs##" (if (string= "boolean" (car property))
+                                   "is"
+                                 "get"))
+           (to-replacements property))
      indent
      indentLevel))
 
   (defun getters(properties indent indentLevel delimiter)
     (apply-for-each #'getter delimiter properties (list indent indentLevel)))
 
-  (defun setter(property indent indentLevel className)
+  (defun setter(property indent indentLevel builderClassName className)
     (apply-template
-     (concat "public ##className## ##name##(##type## ##name##) {\n"
-             "##indent##this.##name## = ##name##;\n"
+     (concat "public ##builderClassName## ##name##(##type## ##name##) {\n"
+             "##indent##this.##classNameField##.##name## = ##name##;\n"
              "##indent##return this;\n"
              "}")     
-     (cons (list "##className##" className) (to-replacements property))
+     (cons (list "##classNameField##" (downcase-firstletter className)) (cons (list "##builderClassName##" builderClassName) (to-replacements property)))
      indent
      indentLevel))
 
-  (defun setters(properties indent indentLevel delimiter className)
-    (apply-for-each #'setter delimiter properties (list indent indentLevel className)))
+  (defun setters(properties indent indentLevel delimiter builderClassName className)
+    (apply-for-each #'setter delimiter properties (list indent indentLevel builderClassName className)))
 
-  (defun build(properties indent indentLevel className)
+  (defun cloneSetter(indent indentLevel builderClassName className)
+    (apply-template
+     (concat "public ##builderClassName## ##classNameField##(##className## ##classNameField##) {\n"
+             "##indent##this.##classNameField## = clone(##classNameField##);\n"
+             "##indent##return this;\n"
+             "}")     
+     (list (list "##className##" className)
+           (list "##builderClassName##" builderClassName)
+           (list "##classNameField##" (downcase-firstletter className)))
+     indent
+     indentLevel))
+
+  (defun build(indent indentLevel className)
     (apply-template
      (concat "public ##className## build() {\n"
-             "##indent##return new ##className##(##arguments##);\n"
+             "##indent##return clone(##classNameField##);\n"
              "}")     
-     (list (list "##arguments##" (apply-for-each (lambda(property indent indentLevel)
-                                                   (cadr property))
-                                                 ", "
-                                                 properties
-                                                 (list indent indentLevel)))
-           (list "##className##" className))
+     (list (list "##className##" className)
+           (list "##classNameField##" (downcase-firstletter className)))
      indent
      indentLevel))
 
-  (defun builder(properties indent indentLevel className)
-    (concat
-     (indent indent indentLevel) "public static class Builder {"
-     "\n"
-     (fields properties indent (+ 1 indentLevel) "\n")
-     "\n\n"
-     (setters properties indent (+ 1 indentLevel) "\n\n" "Builder")
-     "\n\n"
-     (build properties indent (+ 1 indentLevel) className)
-     "\n"
-     (indent indent indentLevel) "}"))
-
-  (defun constructor(properties indent indentLevel className)
+  (defun clone(properties indent indentLevel className)
     (apply-template
-     (concat "private ##className##(##arguments##) {\n"
+     (concat "private ##className## clone(##className## ##classNameField##) {\n"
+             "##indent####className## clone = new ##className##();\n"
              "##body##\n"
+             "##indent##return clone;\n"             
              "}")     
-     (list (list "##arguments##" (apply-for-each (lambda(property indent indentLevel)
-                                                   (concat (car property) " " (cadr property)))
-                                                 ", "
-                                                 properties
-                                                 (list indent indentLevel)))
-           (list "##body##" (apply-for-each (lambda(property indent indentLevel)
+     (list (list "##body##" (apply-for-each (lambda(property indent indentLevel)
                                               (apply-template
-                                               "this.##name## = ##name##;"
-                                               (to-replacements property)
+                                               "clone.##name## = ##classNameField##.##name##;"
+                                               (cons (list "##classNameField##" (downcase-firstletter className)) (to-replacements property))
                                                indent
                                                1))
                                             "\n"
                                             properties
                                             (list indent indentLevel)))
-           (list "##className##" className))
+           (list "##className##" className)
+           (list "##classNameField##" (downcase-firstletter className)))
+     indent
+     indentLevel))
+  
+
+  (defun builder(properties indent indentLevel className)
+    (concat
+     (indent indent indentLevel) "public static class Builder {"
+     "\n"
+     (indent indent (+ 1 indentLevel)) "private " className " " (downcase-firstletter className) " = new " className "();"  
+     "\n\n"
+     (setters properties indent (+ 1 indentLevel) "\n\n" "Builder" className)
+     "\n\n"
+     (cloneSetter indent (+ 1 indentLevel) "Builder" className)
+     "\n\n"     
+     (build indent (+ 1 indentLevel) className)
+     "\n\n"
+     (clone properties indent (+ 1 indentLevel) className)
+     "\n"     
+     (indent indent indentLevel) "}"))
+
+  (defun constructor(indent indentLevel className)
+    (apply-template
+     (concat "private ##className##() {\n"
+             "}")     
+     (list (list "##className##" className))
      indent
      indentLevel))
 
   (concat
-   (indent indent indentLevel) "public class " className " {"
+   (indent indent indentLevel) "import java.io.Serializable;\n\n"
+   (indent indent indentLevel) "public class " className " implements Serializable {"
+   "\n"
+   (indent indent (+ 1 indentLevel)) "private static final long serialVersionUID = 1L;"
    "\n"
    (fields properties indent (+ 1 indentLevel) "\n")
    "\n\n"
-   (constructor properties indent (+ 1 indentLevel) className)
+   (constructor indent (+ 1 indentLevel) className)
    "\n\n"
    (getters properties indent (+ 1 indentLevel) "\n\n")
    "\n\n"
