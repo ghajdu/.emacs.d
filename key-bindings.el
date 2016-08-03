@@ -209,7 +209,7 @@
 (key-chord-define-global "\'\'" "''\C-b")
 (key-chord-define-global "\"\"" "\"\"\C-b")
 
-(global-set-key (kbd "C-c j") 'zencoding-expand-line)
+(global-set-key (kbd "C-c j") 'emmet-expand-line)
 
 ;; Webjump let's you quickly search google, wikipedia, emacs wiki
 ;(global-set-key (kbd "C-x g") 'webjump)
