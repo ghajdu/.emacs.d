@@ -71,7 +71,7 @@
    (cons 'diminish melpa)   
    (cons 'emmet-mode melpa)   
    (cons 'flx-ido melpa)   
-   (cons 'git-commit-mode melpa)
+;   (cons 'git-commit-mode melpa)
    (cons 'gitconfig-mode melpa)
    (cons 'gitignore-mode melpa)
    (cons 'groovy-mode melpa)
