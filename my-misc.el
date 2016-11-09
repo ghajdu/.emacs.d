@@ -21,6 +21,14 @@
 (fset 'mbj/username-password
       (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([home 19 60 117 115 101 114 110 97 109 101 62 67108896 left left left left left left left left left left backspace 101 105 52 53 55 55 19 60 112 97 115 115 119 111 114 100 62 67108896 backspace backspace backspace backspace backspace backspace backspace backspace backspace backspace 67 108 97 114 97 50 51 52 53] 0 "%d")) arg)))
 
+;; Transforms java %foo% %bar% Baz to java $foo $bar Baz
+(fset 'mbj/windows-to-unix-vars
+      [home ?\M-& ?% ?\( ?\[ ?^ ?% ?\] ?+ ?% backspace ?\) ?% return ?$ ?\\ ?1 return ?!])
+
+;; Transforms java $foo $bar Baz to java %foo% %bar% Baz
+(fset 'mbj/unix-to-windows-vars
+      (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([home 134217766 36 40 91 97 45 122 65 45 90 48 45 57 93 43 41 1 92 5 return 37 92 49 37 return 33 24 11 110 109 98 106 47 117 110 105 120 45 116 111 45 119 105 110 100 111 119 115 45 118 97 114 115] 0 "%d")) arg)))
+
 (defun mbj/names (beg end)
   "insert beg end in different cases"
   (interactive "*r")

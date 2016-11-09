@@ -1,7 +1,8 @@
 (require 'yasnippet)
 
+(add-to-list 'yas/snippet-dirs (expand-file-name "snippets" emacs.d-directory))
 ;; Use only own snippets, do not use bundled ones
-(setq yas/snippet-dirs (list (expand-file-name "snippets" emacs.d-directory)))
+;(setq yas/snippet-dirs (list (expand-file-name "snippets" emacs.d-directory)))
 ;(setq yas/snippet-dirs '((concat emacs.d-directory "snippets")))
 ;(setq yas/snippet-dirs (list (concat "" "snippets")))
 (yas/global-mode 1)

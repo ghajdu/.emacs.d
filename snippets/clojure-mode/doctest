@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: doctest
+# key: dt
+# --
+^{:doc "$1"
+  :test (fn []
+          (is (= ($2) $0))
+            )} 
