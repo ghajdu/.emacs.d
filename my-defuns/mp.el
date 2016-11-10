@@ -1,8 +1,4 @@
-(defun mbj/mp (base-dir group-id artifact-id version)
-  "creates a maven project"
-  (interactive "Dbase-dir:\nsgroup-id:\nsartifact-id:\nsversion (1.0.0-SNAPSHOT):")
-  (let* ((package-path (s-replace-all '(("." . "/")) group-id))
-         (template "<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
+(defvar mbj/pom-template "<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"
          xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">
     <modelVersion>4.0.0</modelVersion>
     <groupId>###groupId###</groupId>
@@ -79,24 +75,36 @@
     </build>    
 </project>
 ")
-         (theVersion (if (s-blank? (s-trim version))
-                         "1.0.0-SNAPSHOT"
-                       version))
-         (pom-content (s-replace-all (list (cons "###groupId###" group-id) (cons "###artifactId###" artifact-id) (cons "###version###" theVersion)) template))
-         (out-dir (concat base-dir "/" artifact-id))
-         (pom-file (concat out-dir "/pom.xml")))
-    (mkdir out-dir t)
+
+(defun mbj/mp (base-dir group-id artifact-id version)
+  "creates a maven project"
+  (interactive "Dbase-dir:\nsgroup-id:\nsartifact-id:\nsversion (1.0.0-SNAPSHOT):")
+  (defun write (file content)
     (with-temp-buffer
-      (insert pom-content)
-      (when (file-writable-p pom-file)
+      (insert content)
+      (when (file-writable-p file)
         (write-region (point-min)
                       (point-max)
-                      pom-file)))
-    (mkdir (concat out-dir "/src/main/java/" package-path) t)
-    (mkdir (concat out-dir "/src/main/resources/" package-path) t)
-    (mkdir (concat out-dir "/src/test/java/" package-path) t)
-    (mkdir (concat out-dir "/src/test/resources/" package-path) t)))
+                      file))))
+  ;; (unless version (setq version "1.0.0-SNAPSHOT"))
+  (let ((version (if (s-blank? (s-trim version))
+                     "1.0.0-SNAPSHOT"
+                   version)))
+    (let ((out-dir (concat base-dir "/" artifact-id "/"))         
+          (package-path (s-replace-all '(("." . "/")) group-id))                 
+          (pom-content (s-replace-all (list (cons "###groupId###" group-id)
+                                            (cons "###artifactId###" artifact-id)
+                                            (cons "###version###" version))
+                                      mbj/pom-template)))
+      (mkdir out-dir t)
+      (write (concat out-dir "pom.xml") pom-content)
+      (dolist (dir '("src/main/java/" "src/main/resources/" "src/test/java/" "src/test/resources/"))
+        (mkdir (concat out-dir dir package-path) t))
+      (let ((default-directory out-dir))
+        (shell-command "my-git-init")))))
+
+(provide 'mbj/mp)
 
 
-;; (mp "/Users/ei4577/slask/git" "com.test" "my-funny-project" "1.0.0-SNAPSHOT")
+;;(mbj/mp "/Users/ei4577/slask/git" "com.test" "my-funny-project" "1.0.0-SNAPSHOT")
 
