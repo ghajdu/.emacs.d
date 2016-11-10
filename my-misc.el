@@ -17,10 +17,6 @@
 ;; prompted (other than the initial prompt).
 (setq dired-recursive-deletes 'always)
 
-;; Search replace mvn compile exec:java -Dusername=<username> -Dpassword=<password>
-(fset 'mbj/username-password
-      (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([home 19 60 117 115 101 114 110 97 109 101 62 67108896 left left left left left left left left left left backspace 101 105 52 53 55 55 19 60 112 97 115 115 119 111 114 100 62 67108896 backspace backspace backspace backspace backspace backspace backspace backspace backspace backspace 67 108 97 114 97 50 51 52 53] 0 "%d")) arg)))
-
 ;; Transforms java %foo% %bar% Baz to java $foo $bar Baz
 (fset 'mbj/windows-to-unix-vars
       [home ?\M-& ?% ?\( ?\[ ?^ ?% ?\] ?+ ?% backspace ?\) ?% return ?$ ?\\ ?1 return ?!])

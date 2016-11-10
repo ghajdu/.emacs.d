@@ -14,6 +14,10 @@
 ;; Set path to dependencies
 (setq site-lisp-dir (expand-file-name "site-lisp" emacs.d-directory))
 
+;; Set path to abbrev
+(setq abbrev-file-name (expand-file-name "abbrev_defs" emacs.d-directory))
+(setq save-abbrevs t)
+
 ;; Set up load path
 (add-to-list 'load-path emacs.d-directory)
 (add-to-list 'load-path site-lisp-dir)
@@ -75,6 +79,7 @@
    (cons 'gitconfig-mode melpa)
    (cons 'gitignore-mode melpa)
    (cons 'groovy-mode melpa)
+   (cons 'guide-key melpa)
    (cons 'ido-vertical-mode melpa)
    (cons 'iy-go-to-char melpa)
    (cons 'js2-mode melpa)
@@ -128,6 +133,7 @@
 (require 'setup-ido)
 (require 'setup-clojure)
 (require 'setup-emmet-mode)
+(require 'setup-guide-key)
 (require 'setup-key-chord)
 (require 'setup-markdown-mode)
 (require 'setup-org)
