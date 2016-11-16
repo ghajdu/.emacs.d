@@ -31,8 +31,11 @@
 
 (define-abbrev-table 'global-abbrev-table
   '(
+    ("cef" "com.evry.finance" nil 2)
     ("mail" "magnus.bjuvensjo@evry.com" nil 0)
     ("mb" "Magnus Bjuvensjö" nil 2)
+    ("psvm" "public static void main(String[] args) {
+}" nil 2)
    ))
 
 (define-abbrev-table 'help-mode-abbrev-table '())

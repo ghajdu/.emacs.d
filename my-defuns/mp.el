@@ -76,17 +76,35 @@
 </project>
 ")
 
+(defun mbj/write-string (file content)
+  (with-temp-buffer
+    (insert content)
+    (when (file-writable-p file)
+      (write-region (point-min)
+                    (point-max)
+                    file))))
+
+(defun mbj/create-git-ignore (dir)
+  "Creates a .gitignore file."
+  (interactive "Ddir:")
+  (mbj/write-string (concat dir ".gitignore")
+                    (s-join "\n" '(".settings" "/.project" "/.classpath" ".DS_Store" ".idea" "*.iml" "*.iws" "docs.txt"))))
+
+(defun mbj/git-init (dir)
+  "Initializes a git repository with a .gitignore file and master and develop branches."
+  (interactive "D")
+  (mbj/create-git-ignore dir)
+  (shell-command "git init")
+  (shell-command "git add .gitignore")
+  (shell-command "git commit -am \"initial version\"")
+  (shell-command "git branch develop")
+  (shell-command "git checkout develop")
+  (shell-command "git add --all")
+  (shell-command "git commit -am \"initial develop version\""))
+
 (defun mbj/mp (base-dir group-id artifact-id version)
-  "creates a maven project"
+  "Creates a maven project and a git repository."
   (interactive "Dbase-dir:\nsgroup-id:\nsartifact-id:\nsversion (1.0.0-SNAPSHOT):")
-  (defun write (file content)
-    (with-temp-buffer
-      (insert content)
-      (when (file-writable-p file)
-        (write-region (point-min)
-                      (point-max)
-                      file))))
-  ;; (unless version (setq version "1.0.0-SNAPSHOT"))
   (let ((version (if (s-blank? (s-trim version))
                      "1.0.0-SNAPSHOT"
                    version)))
@@ -97,14 +115,12 @@
                                             (cons "###version###" version))
                                       mbj/pom-template)))
       (mkdir out-dir t)
-      (write (concat out-dir "pom.xml") pom-content)
+      (mbj/write-string (concat out-dir "pom.xml") pom-content)
       (dolist (dir '("src/main/java/" "src/main/resources/" "src/test/java/" "src/test/resources/"))
         (mkdir (concat out-dir dir package-path) t))
       (let ((default-directory out-dir))
-        (shell-command "my-git-init")))))
+        (mbj/git-init out-dir)))))
 
 (provide 'mbj/mp)
 
-
-;;(mbj/mp "/Users/ei4577/slask/git" "com.test" "my-funny-project" "1.0.0-SNAPSHOT")
 
