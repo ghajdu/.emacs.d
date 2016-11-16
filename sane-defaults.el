@@ -8,6 +8,9 @@
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
 
+;; Do not downcase when autocomple
+(setq company-dabbrev-downcase nil)
+
 ;; Show keystrokes in progress
 (setq echo-keystrokes 0.1)
 
