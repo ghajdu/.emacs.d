@@ -16,7 +16,7 @@
   "Creates a .gitignore file."
   (interactive "Ddir:")
   (mbj/write-string (concat dir ".gitignore")
-                    (s-join "\n" '(".settings" "/.project" "/.classpath" ".DS_Store" ".idea" "*.iml" "*.iws" "docs.txt"))))
+                    (s-join "\n" '(".settings" "/.project" "/.classpath" ".DS_Store" ".idea" ".nrepl-port" "*.iml" "*.iws" "docs.txt"))))
 
 (defun mbj/git-init (dir)
   "Initializes a git repository with a .gitignore file and master and develop branches."
