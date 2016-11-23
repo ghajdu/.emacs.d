@@ -51,4 +51,4 @@
       (let ((default-directory out-dir))
         (mbj/git-init out-dir)))))
 
-(provide 'mbj/mp)
+(provide 'mp)
