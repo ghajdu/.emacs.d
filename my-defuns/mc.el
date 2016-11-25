@@ -37,7 +37,7 @@
     (while (re-search-forward "clone.*?\"\\(http:.*?git\\)" nil t)
       (let* ((repo-clone-url (match-string 1))
              (repo-name (replace-regexp-in-string ".*/" "" repo-clone-url))
-             (repo-clone-dir (replace-regexp-in-string (regexp-quote ".") "/" repo-name)))
+             (repo-clone-dir (replace-regexp-in-string (regexp-quote ".") "/" (replace-regexp-in-string ".git$" "" repo-name))))
         (add-to-list 'commands (concat "git clone " repo-clone-url " " repo-clone-dir))))
     (mapconcat 'identity commands "\n")))
 
