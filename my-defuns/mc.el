@@ -1,4 +1,3 @@
-(require 'json)
 (require 'url)
 
 ;; Modify below vars as suits your needs
@@ -8,9 +7,24 @@
 
 (defun mbj/bitbucket-clone-repos (project repo-regexp out-dir username password)
   "Clone Bitbucket repos."
+  (defun mbj/bitbucket-get-project-keys ()
+    "Gets the Bitbucket projects keys that are 'cached' in mbj/bitbucket-project-keys-file"
+    (split-string (with-temp-buffer
+                    (insert-file-contents mbj/bitbucket-project-keys-file)
+                    (buffer-string)) "\n" t))
+  (defun mbj/bitbucket-get-clone-commands ()
+    (interactive)
+    (goto-char 0)
+    (let ((commands (list)))
+      (while (re-search-forward "clone.*?\"\\(http:.*?git\\)" nil t)
+        (let* ((repo-clone-url (match-string 1))
+               (repo-name (replace-regexp-in-string ".*/" "" repo-clone-url))
+               (repo-clone-dir (replace-regexp-in-string (regexp-quote ".") "/" (replace-regexp-in-string ".git$" "" repo-name))))
+          (add-to-list 'commands (concat "git clone " repo-clone-url " " repo-clone-dir))))
+      (mapconcat 'identity commands "\n")))
   (interactive
    (list
-    (completing-read "Project: " (mbj/bitbucket-get-project-keys))
+    (replace-regexp-in-string ":.*" "" (completing-read "Project: " (mbj/bitbucket-get-project-keys)))
     (read-string "Repo regexp (.*): " nil nil ".*")
     (read-directory-name "Output dir: ")
     (read-string (concat "Username (" mbj/bitbucket-default-username "): ") nil nil mbj/bitbucket-default-username)
@@ -26,30 +40,21 @@
                       (mkdir out-dir t)
                       (let ((default-directory out-dir))
                         (async-shell-command (mbj/bitbucket-get-clone-commands)))
-                      (kill-buffer)
+                      ;;(kill-buffer)
                       (dired out-dir))
                     (list (if (string-suffix-p "/" out-dir) out-dir (concat out-dir "/")) repo-regexp)))))
 
-(defun mbj/bitbucket-get-clone-commands ()
-  (interactive)
-  (goto-char 0)
-  (let ((commands (list)))
-    (while (re-search-forward "clone.*?\"\\(http:.*?git\\)" nil t)
-      (let* ((repo-clone-url (match-string 1))
-             (repo-name (replace-regexp-in-string ".*/" "" repo-clone-url))
-             (repo-clone-dir (replace-regexp-in-string (regexp-quote ".") "/" (replace-regexp-in-string ".git$" "" repo-name))))
-        (add-to-list 'commands (concat "git clone " repo-clone-url " " repo-clone-dir))))
-    (mapconcat 'identity commands "\n")))
-
-(defun mbj/bitbucket-get-project-keys ()
-  "Gets the Bitbucket projects keys that are 'cached' in mbj/bitbucket-project-keys-file"
-  (interactive)
-  (split-string (with-temp-buffer
-                  (insert-file-contents mbj/bitbucket-project-keys-file)
-                  (buffer-string)) "\n" t))
 
 (defun mbj/bitbucket-update-project-keys (username password)
   "Updates the Bitbucket projects keys that are 'cached' in mbj/bitbucket-project-keys-file"
+  (defun mbj/bitbucket-get-projects ()
+    (goto-char 0)
+    (let ((projects (list)))
+      (while (re-search-forward "\"key\":\"\\([^\"]+\\)\".*?\"name\":\"\\([^\"]+\\)" nil t)
+        (let* ((key (match-string 1))
+               (name (match-string 2)))
+          (add-to-list 'projects (concat key ": " name))))
+      (mapconcat 'identity projects "\n")))  
   (interactive
    (list
     (read-string (concat "Username (" mbj/bitbucket-default-username "): ") nil nil mbj/bitbucket-default-username)
@@ -59,19 +64,16 @@
          (list (cons "Content-Type" "application/json")
                (cons "Authorization" (concat "Basic " (base64-encode-string (concat username ":" password)))))))
     (save-excursion
-      (url-retrieve (concat bitbucket-url-rest-api "projects?limit=1000")
+      (url-retrieve (concat mbj/bitbucket-url-rest-api "projects?limit=1000")
                     (lambda (status)
                       (switch-to-buffer (current-buffer))
-                      (keep-lines "{.*" (point-min) (point-max))
-                      (mark-whole-buffer)
-                      (kill-ring-save (point-min) (point-max))
-                      (create-scratch-buffer)
-                      (yank)
-                      (json-pretty-print-buffer)
-                      (keep-lines "key" (point-min) (point-max))
-                      (while (re-search-forward ".*key\": \"\\(.*\\)\"" nil t)
-                        (replace-match "\\1" nil nil))
-                      (write-file mbj/bitbucket-project-keys-file)
-                      (kill-buffer))))))
+                      (let ((projects (mbj/bitbucket-get-projects)))
+                        (erase-buffer)
+                        (insert projects)
+                        (sort-lines nil (point-min) (point-max))                        
+                        (write-file mbj/bitbucket-project-keys-file)
+                        (kill-buffer)
+                        ))
+                    ))))
 
 (provide 'mc)
