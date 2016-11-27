@@ -13,7 +13,6 @@
                     (insert-file-contents mbj/bitbucket-project-keys-file)
                     (buffer-string)) "\n" t))
   (defun mbj/bitbucket-get-clone-commands ()
-    (interactive)
     (goto-char 0)
     (let ((commands (list)))
       (while (re-search-forward "clone.*?\"\\(http:.*?git\\)" nil t)
