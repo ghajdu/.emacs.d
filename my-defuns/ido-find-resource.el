@@ -47,4 +47,4 @@
 ;(global-set-key (kbd "s-o") 'my-ido-find-resource)
 ;(global-set-key (kbd "s-r") 'my-ido-set-resource-root)
 
-
+(provide 'ido-find-resource)

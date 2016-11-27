@@ -15,4 +15,4 @@ Inserts a tree listing of the specified dir in current buffer)
   (save-excursion
     (tree dir "|____")))
 
-(provide 'mbj/tree)
+(provide 'tree)
