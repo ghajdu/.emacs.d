@@ -3,3 +3,5 @@
          (minutes (truncate (/ totalSeconds km 60)))
          (seconds (round (mod (/ totalSeconds (* km 1.0)) 60))))
     (concat (number-to-string minutes) ":" (number-to-string seconds) " min/km")))
+
+(provide 'pace)

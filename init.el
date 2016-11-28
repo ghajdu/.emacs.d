@@ -96,7 +96,7 @@
    (cons 'visual-regexp melpa)
    (cons 'visual-regexp-steroids melpa)
 ;   (cons 'smartparens melpa)
-;   (cons 'elisp-slime-nav melpa)
+   (cons 'elisp-slime-nav melpa)
 ;   ;(cons 'elnode marmalade)
 ;   (cons 'slime-js marmalade)
    (cons 'cider melpa-stable)
@@ -136,9 +136,10 @@
 (require 'setup-guide-key)
 (require 'setup-key-chord)
 (require 'setup-markdown-mode)
+(require 'setup-magit)
 (require 'setup-org)
 (require 'setup-scss)
-;(require 'setup-paredit)
+(require 'setup-paredit)
 (require 'setup-yasnippet)
 ;(require 'setup-zencoding-mode)
 ;(require 'setup-perspective)
@@ -185,7 +186,7 @@
 
 ;; Functions (load all files in defuns-dir)
 (setq defuns-dir (expand-file-name "my-defuns" emacs.d-directory))
-(dolist (file (directory-files defuns-dir t "\\w+"))
+(dolist (file (directory-files defuns-dir t "\\w+.el"))
   (when (file-regular-p file)
     (load file)))
 
@@ -228,23 +229,23 @@
 ;(when is-mac (require 'mac))
 
 ;; Diminish modeline clutter
-;(require 'diminish)
-;(diminish 'yas/minor-mode)
-;(diminish 'eldoc-mode)
-;(diminish 'paredit-mode)
+(require 'diminish)
+(diminish 'yas/minor-mode)
+(diminish 'eldoc-mode)
+(diminish 'paredit-mode)
 
 ;; Elisp go-to-definition with M-. and back again with M-,
-;(autoload 'elisp-slime-nav-mode "elisp-slime-nav")
-;(add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t) (eldoc-mode 1)))
-;(eval-after-load 'elisp-slime-nav '(diminish 'elisp-slime-nav-mode))
+(autoload 'elisp-slime-nav-mode "elisp-slime-nav")
+(add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t) (eldoc-mode 1)))
+(eval-after-load 'elisp-slime-nav '(diminish 'elisp-slime-nav-mode))
 
 ;; Email, baby
 ;(require 'setup-mu4e)
 
 ;; Emacs server
-;(require 'server)
-;(unless (server-running-p)
-;  (server-start))
+(require 'server)
+(unless (server-running-p)
+ (server-start))
 
 ;; Run at full power please
 ;(put 'downcase-region 'disabled nil)

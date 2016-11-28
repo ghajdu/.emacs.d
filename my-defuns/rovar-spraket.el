@@ -9,6 +9,7 @@
 
 ;;(global-set-key (kbd "C-c C-s") 'mbj/rövarspråket)
 
+(provide 'rovar-spraket)
 
 
 
