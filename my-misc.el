@@ -17,6 +17,18 @@
 ;; prompted (other than the initial prompt).
 (setq dired-recursive-deletes 'always)
 
+(defun mbj/downcase-char-at-point (n)
+  "Downcase char at point."
+  (interactive "p")
+  (dotimes (el (if n n 1)) 
+    (downcase-region (point) (progn (forward-char) (point)))))
+
+(defun mbj/upcase-char-at-point (n)
+  "Upcase char at point."
+  (interactive "p")
+  (dotimes (el (if n n 1)) 
+    (upcase-region (point) (progn (forward-char) (point)))))
+
 ;; Transforms java %foo% %bar% Baz to java $foo $bar Baz
 (fset 'mbj/windows-to-unix-vars
       [home ?\M-& ?% ?\( ?\[ ?^ ?% ?\] ?+ ?% backspace ?\) ?% return ?$ ?\\ ?1 return ?!])
@@ -26,7 +38,7 @@
       (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([home 134217766 36 40 91 97 45 122 65 45 90 48 45 57 93 43 41 1 92 5 return 37 92 49 37 return 33 24 11 110 109 98 106 47 117 110 105 120 45 116 111 45 119 105 110 100 111 119 115 45 118 97 114 115] 0 "%d")) arg)))
 
 (defun mbj/names (beg end)
-  "insert beg end in different cases"
+  "Insert beg end in different cases."
   (interactive "*r")
    (defun s (names)
    (defun s-snake-upcase (s)

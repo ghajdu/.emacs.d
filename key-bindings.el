@@ -20,6 +20,9 @@
 ;(global-set-key (kbd "C-:") 'hippie-expand-lines)
 ;(global-set-key (kbd "C-,") 'completion-at-point)
 
+(global-set-key (kbd "H-u") 'mbj/upcase-char-at-point)
+(global-set-key (kbd "H-d") 'mbj/downcase-char-at-point)
+
 ;(require 'misc)
 ;(global-set-key (kbd "s-.") 'copy-from-above-command)
 
