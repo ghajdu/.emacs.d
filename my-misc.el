@@ -20,13 +20,13 @@
 (defun mbj/downcase-char-at-point (n)
   "Downcase char at point."
   (interactive "p")
-  (dotimes (el (if n n 1)) 
+  (dotimes (i (or n 1)) 
     (downcase-region (point) (progn (forward-char) (point)))))
 
 (defun mbj/upcase-char-at-point (n)
   "Upcase char at point."
   (interactive "p")
-  (dotimes (el (if n n 1)) 
+  (dotimes (i (or n 1)) 
     (upcase-region (point) (progn (forward-char) (point)))))
 
 ;; Transforms java %foo% %bar% Baz to java $foo $bar Baz
