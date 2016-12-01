@@ -375,4 +375,9 @@
  (lambda ()
    (define-key dired-mode-map (kbd "ö") 'dired-up-directory)))
 
+(add-hook
+ 'emacs-lisp-mode-hook
+ (lambda ()
+   (define-key emacs-lisp-mode-map (kbd "C-c C-k") 'ert-t)))
+
 (provide 'key-bindings)
