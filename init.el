@@ -1,12 +1,15 @@
-;; Frame (window) size
+;; Frame window size
 ;;(set-frame-parameter nil 'fullscreen 'fullboth)
-(add-to-list 'default-frame-alist '(width  . 114))
-(add-to-list 'default-frame-alist '(height . 71))
+(add-to-list 'initial-frame-alist '(width  . 239))
+(add-to-list 'initial-frame-alist '(height . 71))
+
+; Set fringes
+(set-fringe-style '(10 . 0))
 
 ;; Turn off mouse interface early in startup to avoid momentary display
 ;;(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-;;(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
 ;; No splash screen please ... jeez
 (setq inhibit-startup-message t)
