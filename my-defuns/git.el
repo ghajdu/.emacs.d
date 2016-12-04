@@ -3,7 +3,7 @@
   (interactive "Ddir:")
   (with-temp-buffer
     (let ((file (concat dir ".gitignore")))
-      (insert (s-join "\n" '(".settings" "/.project" "/.classpath" ".DS_Store" ".idea" ".nrepl-port" "*.iml" "*.iws" "docs.txt")))
+      (insert (s-join "\n" '(".settings" "target" "/.project" "/.classpath" ".DS_Store" ".idea" ".nrepl-port" "*.iml" "*.iws" "docs.txt")))
       (when (file-writable-p file)
         (write-region (point-min)
                       (point-max)

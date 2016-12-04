@@ -8,7 +8,7 @@
  '(column-number-mode t)
  '(custom-safe-themes
    (quote
-    ("c03d60937e814932cd707a487676875457e0b564a615c1edfd453f23b06fe879" "9527feeeec43970b1d725bdc04e97eb2b03b15be982ac50089ad223d3c6f2920" default)))
+    ("e521c25ef12b83556b1055b8e49c9c33afd991eef7774519644561a963e7f4aa" "c03d60937e814932cd707a487676875457e0b564a615c1edfd453f23b06fe879" "9527feeeec43970b1d725bdc04e97eb2b03b15be982ac50089ad223d3c6f2920" default)))
  '(dired-listing-switches "-al")
  '(ibuffer-formats
    (quote
@@ -27,6 +27,8 @@
      (mark " "
            (name 16 -1)
            " " filename))))
+ '(ido-enable-flex-matching t)
+ '(ido-mode (quote both) nil (ido))
  '(ido-use-filename-at-point nil)
  '(initial-scratch-message nil)
  '(nxml-child-indent 4)
