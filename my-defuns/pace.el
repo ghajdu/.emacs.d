@@ -9,3 +9,4 @@
   (should (equal (pace 0 44 4 10) "4:24 min/km")))
 
 (provide 'pace)
+
