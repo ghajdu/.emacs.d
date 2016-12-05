@@ -2,7 +2,7 @@
 
 ;; Use only own snippets, do not use bundled ones
 ;; (add-to-list 'yas/snippet-dirs (expand-file-name "snippets" emacs.d-directory))
-(add-to-list 'yas-snippet-dirs (expand-file-name  emacs.d-directory "snippets"))
+(add-to-list 'yas-snippet-dirs (expand-file-name "snippets" emacs.d-directory))
 ;(setq yas-snippet-dirs (list (cons  emacs.d-directory "/snippets")))
 (yas-global-mode 1)
 

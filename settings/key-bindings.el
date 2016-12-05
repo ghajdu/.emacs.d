@@ -137,14 +137,14 @@
 (global-set-key (kbd "C-x C-i") 'ido-imenu)
 
 ;; ;; File finding
-;; (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
+(global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
 (global-set-key (kbd "C-x f") 'recentf-ido-find-file)
 (global-set-key (kbd "C-x C-p") 'find-or-create-file-at-point)
-;; (global-set-key (kbd "C-x M-p") 'find-or-create-file-at-point-other-window)
+(global-set-key (kbd "C-x M-p") 'find-or-create-file-at-point-other-window)
 ;; (global-set-key (kbd "C-c y") 'bury-buffer)
 (global-set-key (kbd "C-c r") 'revert-buffer)
 ;; (global-set-key (kbd "M-`") 'file-cache-minibuffer-complete)
-;; (global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;; ;; toggle two most recent buffers
 (fset 'quick-switch-buffer [?\C-x ?b return])
@@ -198,12 +198,12 @@
 ;; (global-set-key (kbd "M-<left>") 'smart-backward)
 ;; (global-set-key (kbd "M-<right>") 'smart-forward)
 
-;; ;; Webjump let's you quickly search google, wikipedia, emacs wiki
-;; (global-set-key (kbd "C-x g") 'webjump)
+;; Webjump let's you quickly search google, wikipedia, emacs wiki
+(global-set-key (kbd "C-x g") 'webjump)
 ;; (global-set-key (kbd "C-x M-g") 'browse-url-at-point)
 
-;; ;; Completion at point
-;; (global-set-key (kbd "C-<tab>") 'completion-at-point)
+;; Completion at point
+(global-set-key (kbd "C-<tab>") 'completion-at-point)
 
 ;; ;; Like isearch, but adds region (if any) to history and deactivates mark
 ;; (global-set-key (kbd "C-s") 'isearch-forward-use-region)
@@ -367,6 +367,9 @@
 ;; Downcase and upcase
 (global-set-key (kbd "H-d") 'mbj/downcase-char-at-point)
 (global-set-key (kbd "H-u") 'mbj/upcase-char-at-point)
+
+;; Copy file path
+(global-set-key (kbd "C-c p") 'copy-full-path-to-kill-ring)
 
 (add-hook
  'dired-mode-hook

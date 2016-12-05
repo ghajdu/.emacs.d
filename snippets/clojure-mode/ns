@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-# name: namespace
-# key: ns
+# name: ns
 # key: ns
 # --
 (ns `(flet ((try-src-prefix

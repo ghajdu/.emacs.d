@@ -310,5 +310,13 @@
 ;; ;; TODO: Loot more stuff from:
 ;; ;;  - https://github.com/overtone/emacs-live/blob/master/packs/dev/clojure-pack/config/paredit-conf.el
 
+(defun cider-load-buffer-and-test-project ()
+  "Load buffer and run project tests."
+  (interactive)
+  (cider-load-buffer)
+  (cider-test-run-project-tests))
+
+(define-key clojure-mode-map (kbd "H-.") 'cider-load-buffer-and-test-project)
 
 (provide 'setup-clojure-mode)
+        

@@ -145,6 +145,8 @@
 ;; (require 'setup-ffip)
 ;; (require 'setup-html-mode)
 (require 'setup-paredit)
+(require 'setup-webjump)
+
 
 ;; (require 'prodigy)
 ;; (global-set-key (kbd "C-x M-m") 'prodigy)
