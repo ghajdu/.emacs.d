@@ -1,4 +1,4 @@
-(defun mbj/rövarspråket()
+(defun rövarspråket()
   (interactive)
   (save-excursion
     (goto-char 1)
@@ -7,7 +7,12 @@
         (insert (string (following-char) ?o)))
       (forward-char 1))))
 
-;;(global-set-key (kbd "C-c C-s") 'mbj/rövarspråket)
+(ert-deftest test-rövarspråket ()
+  (should (equal (with-temp-buffer
+                   (insert "Bananas are good!")
+                   (rövarspråket)
+                   (buffer-string))
+                 "BoBanonanonasos arore gogoodod!")))
 
 (provide 'rovar-spraket)
 

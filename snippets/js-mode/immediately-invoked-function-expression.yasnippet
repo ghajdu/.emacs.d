@@ -1,7 +1,8 @@
 # -*- mode: snippet -*-
-# name: if
-# key: if
+# name: immediately-invoked-function-expression
+# key: ff
 # --
-if ($1 === $2) {
-    $0
-}
+(function (${2:${1:$(buster--shortcuts-for-globals yas/text)}}) {
+    `(buster--maybe-use-strict)
+ `$0
+}(${1:`(if buster-add-default-global-to-iife buster-default-global)`}));

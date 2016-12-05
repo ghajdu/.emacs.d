@@ -2,12 +2,10 @@
 (require 's)
 (require 'dash)
 
-;; (defvar js2r-path-to-tests "/test/"
-(defvar js2r-path-to-tests ""
+(defvar js2r-path-to-tests "/test/"
   "Path to tests from a root shared with sources")
 
-;; (defvar js2r-path-to-sources "/lib/"
-(defvar js2r-path-to-sources ""
+(defvar js2r-path-to-sources "/src/"
   "Path to sources from a root shared with tests")
 
 (defvar js2r-test-suffix "-test"

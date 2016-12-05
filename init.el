@@ -1,108 +1,111 @@
-;; Frame (window) size
-;;(set-frame-parameter nil 'fullscreen 'fullboth)
-(add-to-list 'default-frame-alist '(width  . 114))
-(add-to-list 'default-frame-alist '(height . 71))
+;; Frame window size
+;; (set-frame-parameter nil 'fullscreen 'fullboth)
+(add-to-list 'initial-frame-alist '(width  . 166))
+(add-to-list 'initial-frame-alist '(height . 47))
+
+; Set fringes
+(set-fringe-style '(10 . 0))
 
 ;; Turn off mouse interface early in startup to avoid momentary display
-;;(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+;; (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-;;(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
 ;; No splash screen please ... jeez
 (setq inhibit-startup-message t)
 
-;; Set path to dependencies
-(setq site-lisp-dir (expand-file-name "site-lisp" emacs.d-directory))
+;; No scratch message
+(setq initial-scratch-message nil)
 
-;; Set path to abbrev
-(setq abbrev-file-name (expand-file-name "abbrev_defs" emacs.d-directory))
-(setq save-abbrevs t)
+;; This is not really good...
+(setq warning-minimum-level :emergency)
 
-;; Set up load path
-(add-to-list 'load-path emacs.d-directory)
-(add-to-list 'load-path site-lisp-dir)
+(setq settings-dir (expand-file-name "settings" emacs.d-directory))
 
-;; Settings for currently logged in user
-;(setq user-settings-dir
-;      (concat emacs.d-directory "users/" user-login-name))
-;(add-to-list 'load-path user-settings-dir)
+;; ;; Set up load path
+(add-to-list 'load-path settings-dir)
 
-;; Add external projects to load path
-(dolist (project (directory-files site-lisp-dir t "\\w+"))
-  (when (file-directory-p project)
-    (add-to-list 'load-path project)))
+(setq package-user-dir (expand-file-name "elpa" emacs.d-directory))
 
 ;; Keep emacs Custom-settings in separate file
 (setq custom-file (expand-file-name "custom.el" emacs.d-directory))
 (load custom-file)
 
 ;; Write backup files to own directory
-(setq backup-directory-alist
-      `((".*" . ,(expand-file-name
-                  (concat user-emacs-directory "backups")))))
+(setq backup-directory-alist `(("." . ,(expand-file-name "backups"  user-emacs-directory))))
 
 ;; Make backups of files, even when they're in version control
 (setq vc-make-backup-files t)
 
-;; Write auto-save files to own directory
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
-
 ;; Save point position between sessions
-(require 'saveplace)
-(setq-default save-place t)
+(save-place-mode 1)
 (setq save-place-file (expand-file-name ".places" user-emacs-directory))
+(setq save-place-forget-unreadable-files nil)
 
 ;; Are we on a mac?
 (setq is-mac (equal system-type 'darwin))
 
-;; Setup elnode before packages to stop it from starting a server
-(require 'setup-elnode)
-
-;; Control versions of packages
-;;(setq package-load-list '((cider "0.10.0") all))
-
-;; Setup packages
+;; ;; Setup packages
 (require 'setup-package)
 
 ;; Install extensions if they're missing
 (defun init--install-packages ()
   (packages-install
-;   (cons 'exec-path-from-shell melpa)
-   (cons 'paredit melpa)
-   (cons 'auto-complete melpa)
-   (cons 'company melpa)   
-   (cons 'diminish melpa)   
-   (cons 'emmet-mode melpa)   
-   (cons 'flx-ido melpa)   
-;   (cons 'git-commit-mode melpa)
-   (cons 'gitconfig-mode melpa)
-   (cons 'gitignore-mode melpa)
-   (cons 'groovy-mode melpa)
-   (cons 'guide-key melpa)
-   (cons 'ido-vertical-mode melpa)
-   (cons 'iy-go-to-char melpa)
-   (cons 'js2-mode melpa)
-   (cons 'js2-refactor melpa)
-   (cons 'key-chord melpa)
-   (cons 'less-css-mode melpa)   
-   (cons 'magit melpa)
-   (cons 'move-text melpa)
-   (cons 'restclient melpa)
-;   (cons 'zencoding-mode melpa)
-   (cons 'scss-mode melpa)   
-;   (cons 'gist melpa)
-;   (cons 'htmlize melpa)
-   (cons 'visual-regexp melpa)
-   (cons 'visual-regexp-steroids melpa)
-;   (cons 'smartparens melpa)
-   (cons 'elisp-slime-nav melpa)
-;   ;(cons 'elnode marmalade)
-;   (cons 'slime-js marmalade)
-   (cons 'cider melpa-stable)
-   ;; (cons 'clojure-mode melpa)
-   ;; (cons 'nrepl melpa)
-   ))
+   '(;; css-eldoc
+     ;; dockerfile-mode
+     ;; edn
+     ;; fill-column-indicator
+     ;; gist
+     ;; highlight-escape-sequences
+     ;; htmlize
+     ;; hydra
+     ;; nodejs-repl
+     ;; prodigy
+     ;; simple-httpd
+     ;; smartparens
+     ;; string-edit
+     ;; whitespace-cleanup-mode
+     ;; yesql-ghosts
+     ace-jump-mode
+     browse-kill-ring
+     change-inner
+     cider
+     clojure-mode
+     clojure-mode-extra-font-locking
+     company
+     dash
+     diminish
+     dired-details
+     elisp-slime-nav
+     expand-region
+     f
+     flx
+     flx-ido
+     flycheck
+     flycheck-clojure
+     flycheck-pos-tip
+     groovy-mode
+     groovy-mode
+     guide-key
+     ido-at-point
+     ido-ubiquitous
+     ido-vertical-mode
+     magit
+     markdown-mode
+     move-text
+     multiple-cursors
+     paredit
+     restclient
+     s
+     shell-command
+     smex
+     smooth-scrolling
+     undo-tree
+     visual-regexp
+     wgrep
+     yasnippet
+     zoom-frm
+     )))
 
 (condition-case nil
     (init--install-packages)
@@ -117,66 +120,74 @@
 (require 'sane-defaults)
 
 ;; Setup environment variables from the user's shell.
-;(when is-mac (exec-path-from-shell-initialize))
+(when is-mac
+  (require-package 'exec-path-from-shell)
+  (exec-path-from-shell-initialize))
 
-;; Setup extensions
-(eval-after-load 'org '(require 'setup-org))
-;(eval-after-load 'dired '(require 'setup-dired))
-;(eval-after-load 'magit '(require 'setup-magit))
-;(eval-after-load 'grep '(require 'setup-rgrep))
-;(eval-after-load 'shell '(require 'setup-shell))
-;(require 'setup-hippie)
+;; guide-key
+(require 'guide-key)
+(setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x v" "C-x 8" "C-x +"))
+(guide-key-mode 1)
+(setq guide-key/recursive-key-sequence-flag t)
+(setq guide-key/popup-window-position 'bottom)
 
-;;(eval-after-load 'auto-complete '(require 'setup-auto-complete))
-(global-company-mode)
-(require 'setup-ace-jump-mode)
-(require 'setup-ido)
-(require 'setup-clojure)
-(require 'setup-emmet-mode)
-(require 'setup-guide-key)
-(require 'setup-key-chord)
-(require 'setup-markdown-mode)
-(require 'setup-magit)
-(require 'setup-org)
-(require 'setup-scss)
-(require 'setup-paredit)
+;; ;; Setup extensions
+(eval-after-load 'ido '(require 'setup-ido))
+;; (eval-after-load 'org '(require 'setup-org))
+(eval-after-load 'dired '(require 'setup-dired))
+(eval-after-load 'magit '(require 'setup-magit))
+(eval-after-load 'grep '(require 'setup-rgrep))
+;; (eval-after-load 'shell '(require 'setup-shell))
+(require 'setup-hippie)
 (require 'setup-yasnippet)
-;(require 'setup-zencoding-mode)
-;(require 'setup-perspective)
-;(require 'setup-ffip)
-;(require 'setup-html-mode)
-;(require 'setup-paredit)
-;
+;; (require 'setup-perspective)
+;; (require 'setup-ffip)
+;; (require 'setup-html-mode)
+(require 'setup-paredit)
+
+;; (require 'prodigy)
+;; (global-set-key (kbd "C-x M-m") 'prodigy)
+
+;; Font lock dash.el
+(eval-after-load "dash" '(dash-enable-font-lock))
+
 ;; Default setup of smartparens
-;(require 'smartparens-config)
+;; (require 'smartparens-config)
+;; (setq sp-
+;; autoescape-string-quote nil)
+;; (--each '(css-mode-hook
+;;           restclient-mode-hook
+;;           js-mode-hook
+;;           java-mode
+;;           ruby-mode
+;;           markdown-mode
+;;           groovy-mode
+;;           scala-mode)
+;;   (add-hook it 'turn-on-smartparens-mode))
 
 ;; Language specific setup files
-(require 'setup-js2-mode)
-;(eval-after-load 'ruby-mode '(require 'setup-ruby-mode))
-;(eval-after-load 'clojure-mode '(require 'setup-clojure-mode))
-;(eval-after-load 'markdown-mode '(require 'setup-markdown-mode))
-;
-;; Load slime-js when asked for
-;(autoload 'slime-js-jack-in-browser "setup-slime-js" nil t)
-;(autoload 'slime-js-jack-in-node "setup-slime-js" nil t)
+;; (eval-after-load 'js2-mode '(require 'setup-js2-mode))
+(eval-after-load 'clojure-mode '(require 'setup-clojure-mode))
+(eval-after-load 'markdown-mode '(require 'setup-markdown-mode))
+
+;; Load stuff on demand
+;; (autoload 'skewer-start "setup-skewer" nil t)
+;; (autoload 'skewer-demo "setup-skewer" nil t)
+(autoload 'auto-complete-mode "auto-complete" nil t)
+(eval-after-load 'flycheck '(require 'setup-flycheck))
 
 ;; Map files to modes
-;(require 'mode-mappings)
+;; (require 'mode-mappings)
+
+;; Highlight escape sequences
+;; (require 'highlight-escape-sequences)
+;; (hes-mode)
+;; (put 'font-lock-regexp-grouping-backslash 'face-alias 'font-lock-builtin-face)
 
 ;; Visual regexp
 (require 'visual-regexp)
-(require 'visual-regexp-steroids)
-;(define-key global-map (kbd "M-&") 'vr/query-replace)
-;(define-key global-map (kbd "M-/") 'vr/replace)
-
-;; Tern.js
-(add-to-list 'load-path (expand-file-name "tern/emacs" site-lisp-dir))
-(autoload 'tern-mode "tern.el" nil t)
-(add-hook 'js2-mode-hook (lambda () (tern-mode t)))
-(eval-after-load 'tern
-  '(progn
-     (require 'tern-auto-complete)
-     (tern-ac-setup)))
+(define-key global-map (kbd "M-&") 'vr/query-replace)
+(define-key global-map (kbd "M-/") 'vr/replace)
 
 ;; Functions (load all files in defuns-dir)
 (setq defuns-dir (expand-file-name "defuns" emacs.d-directory))
@@ -184,79 +195,66 @@
   (when (file-regular-p file)
     (load file)))
 
-;; Functions (load all files in defuns-dir)
+;; Functions (load all el-files in my-defuns-dir)
 (setq defuns-dir (expand-file-name "my-defuns" emacs.d-directory))
 (dolist (file (directory-files defuns-dir t "\\w+.el"))
   (when (file-regular-p file)
     (load file)))
 
 (require 'expand-region)
-;(require 'mark-more-like-this)
-;(require 'inline-string-rectangle)
 (require 'multiple-cursors)
-;(require 'delsel)
-;(require 'jump-char)
-;(require 'eproject)
-;(require 'wgrep)
-;(require 'smart-forward)
-;(require 'change-inner)
-;(require 'multifiles)
-(require 'my-misc)
-(require 'run-current-file)
-(require 'sort-and-delete-duplicate-lines)
-(require 'toggle-window-dedicated)
+;; (require 'delsel)
+;; (require 'jump-char)
+;; (require 'eproject)
+(require 'wgrep)
+;; (require 'smart-forward)
+(require 'change-inner)
+;; (require 'multifiles)
 
-;
-;; Fill column indicator
-;(require 'fill-column-indicator)
-;(setq fci-rule-color "#111122")
+;; ;; Don't use expand-region fast keys
+(setq expand-region-fast-keys-enabled t)
 
-;; Browse kill ring
+;; ;; Show expand-region command used
+(setq er--show-expansion-message t)
+
+;; ;; Fill column indicator
+;; (require 'fill-column-indicator)
+;; (setq fci-rule-color "#111122")
+
+;; ;; Browse kill ring
 (require 'browse-kill-ring)
 (setq browse-kill-ring-quit-action 'save-and-restore)
 
 ;; Smart M-x is smart
-;(require 'smex)
-;(smex-initialize)
+(require 'smex)
+(smex-initialize)
 
-;; Setup key bindings
+;; ;; Setup key bindings
 (require 'key-bindings)
 
-;; Misc
-;(require 'project-archetypes)
-;(require 'appearance)
-;(require 'my-misc)
-;(when is-mac (require 'mac))
+;; ;; Misc
+;; ;; (require 'project-archetypes)
+;; (require 'my-misc)
+(when is-mac (require 'mac))
 
-;; Diminish modeline clutter
-(require 'diminish)
-(diminish 'yas/minor-mode)
-(diminish 'eldoc-mode)
-(diminish 'paredit-mode)
-
-;; Elisp go-to-definition with M-. and back again with M-,
+;; ;; Elisp go-to-definition with M-. and back again with M-,
 (autoload 'elisp-slime-nav-mode "elisp-slime-nav")
 (add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t) (eldoc-mode 1)))
-(eval-after-load 'elisp-slime-nav '(diminish 'elisp-slime-nav-mode))
 
-;; Email, baby
-;(require 'setup-mu4e)
-
-;; Emacs server
+;; ;; Emacs server
 (require 'server)
 (unless (server-running-p)
- (server-start))
+  (server-start))
 
-;; Run at full power please
-;(put 'downcase-region 'disabled nil)
-;(put 'narrow-to-region 'disabled nil)
+;; ;; Run at full power please
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
 
 ;; Conclude init by setting up specifics for the current user
-;(when (file-exists-p user-settings-dir)
-;  (mapc 'load (directory-files user-settings-dir nil "^[^#].*el$")))
+;; (when (file-exists-p user-settings-dir)
+;;   (mapc 'load (directory-files user-settings-dir nil "^[^#].*el$")))
 
-;; Configures indentation of groovy, java, C and related modes all at once
-(defun my-c-mode-hook () 
-  (setq indent-tabs-mode nil 
-        c-basic-offset 4)) 
-(add-hook 'c-mode-common-hook 'my-c-mode-hook) 
+;; Company mode everywhere
+(add-hook 'after-init-hook 'global-company-mode)
+
