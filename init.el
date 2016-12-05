@@ -18,7 +18,7 @@
 (setq initial-scratch-message nil)
 
 ;; This is not really good...
-(setq warning-minimum-level :emergency)
+;; (setq warning-minimum-level :emergency)
 
 (setq settings-dir (expand-file-name "settings" emacs.d-directory))
 
@@ -95,6 +95,7 @@
      move-text
      multiple-cursors
      paredit
+     popup
      restclient
      s
      shell-command
