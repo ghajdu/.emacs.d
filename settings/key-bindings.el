@@ -64,8 +64,8 @@
 (global-set-key (kbd "C-c C-n") 'cleanup-buffer)
 ;; (global-set-key (kbd "C-c C-<return>") 'delete-blank-lines)
 
-;; ;; M-i for back-to-indentation
-;; (global-set-key (kbd "M-i") 'back-to-indentation)
+;; M-i for back-to-indentation
+(global-set-key (kbd "M-i") 'back-to-indentation)
 
 ;; ;; Turn on the menu bar for exploring new modes
 ;; (global-set-key (kbd "C-<f10>") 'menu-bar-mode)
@@ -233,21 +233,27 @@
 ;; ;; Yank selection in isearch
 ;; (define-key isearch-mode-map (kbd "C-o") 'isearch-yank-selection)
 
-;; ;; Comment/uncomment block
+;; Comment/uncomment block
 (global-set-key (kbd "C-c c") 'comment-or-uncomment-region)
 (global-set-key (kbd "C-c u") 'uncomment-region)
 
-;; ;; Eval buffer
+;; Eval buffer
 (global-set-key (kbd "C-c C-k") 'eval-buffer)
 
-;; ;; Create scratch buffer
+;; Create scratch buffer
 (global-set-key (kbd "C-c b") 'create-scratch-buffer)
 
-;; ;; Move windows, even in org-mode
+;; Move windows, even in org-mode
 (global-set-key (kbd "<s-right>") 'windmove-right)
 (global-set-key (kbd "<s-left>") 'windmove-left)
 (global-set-key (kbd "<s-up>") 'windmove-up)
 (global-set-key (kbd "<s-down>") 'windmove-down)
+
+;; Resize window
+(global-set-key (kbd "<S-s-down>") 'shrink-window)
+(global-set-key (kbd "<S-s-up>") 'enlarge-window)
+(global-set-key (kbd "<S-s-left>") 'shrink-window-horizontally)
+(global-set-key (kbd "<S-s-right>") 'enlarge-window-horizontally)
 
 ;; Magit
 (global-set-key (kbd "C-x m") 'magit-status-fullscreen)

@@ -45,6 +45,7 @@
 (global-set-key (kbd "C-<f9>") 'use-leuven-theme)
 
 (use-default-theme)
+;;(use-zenburn-theme)
 
 ;; Don't defer screen updates when performing operations
 (setq redisplay-dont-pause t)
