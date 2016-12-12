@@ -90,6 +90,8 @@
      ido-at-point
      ido-ubiquitous
      ido-vertical-mode
+     js2-mode
+     json-mode
      magit
      markdown-mode
      move-text
@@ -169,7 +171,7 @@
 ;;   (add-hook it 'turn-on-smartparens-mode))
 
 ;; Language specific setup files
-;; (eval-after-load 'js2-mode '(require 'setup-js2-mode))
+(eval-after-load 'js2-mode '(require 'setup-js2-mode))
 (eval-after-load 'clojure-mode '(require 'setup-clojure-mode))
 (eval-after-load 'markdown-mode '(require 'setup-markdown-mode))
 

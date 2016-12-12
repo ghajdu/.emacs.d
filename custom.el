@@ -11,7 +11,7 @@
  '(ido-use-filename-at-point nil)
  '(package-selected-packages
    (quote
-    (shell-command change-inner ace-jump-mode yasnippet visual-regexp flx exec-path-from-shell string-edit yesql-ghosts prodigy dockerfile-mode whitespace-cleanup-mode highlight-escape-sequences nodejs-repl simple-httpd ido-at-point smartparens css-eldoc dired-details f flycheck-pos-tip flycheck fill-column-indicator markdown-mode htmlize gist hydra inflections edn visual-regexp-steroids scss-mode restclient paredit move-text magit less-css-mode key-chord js2-refactor iy-go-to-char ido-vertical-mode guide-key groovy-mode gitignore-mode gitconfig-mode flx-ido emmet-mode elisp-slime-nav diminish company command-log-mode auto-complete)))
+    (json-mode js2-mode shell-command change-inner ace-jump-mode yasnippet visual-regexp flx exec-path-from-shell string-edit yesql-ghosts prodigy dockerfile-mode whitespace-cleanup-mode highlight-escape-sequences nodejs-repl simple-httpd ido-at-point smartparens css-eldoc dired-details f flycheck-pos-tip flycheck fill-column-indicator markdown-mode htmlize gist hydra inflections edn visual-regexp-steroids scss-mode restclient paredit move-text magit less-css-mode key-chord js2-refactor iy-go-to-char ido-vertical-mode guide-key groovy-mode gitignore-mode gitconfig-mode flx-ido emmet-mode elisp-slime-nav diminish company command-log-mode auto-complete)))
  '(safe-local-variable-values
    (quote
     ((eval font-lock-add-keywords nil
