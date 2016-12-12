@@ -4,7 +4,7 @@
 (defvar github/default-username "bjuvensjo")
 (defvar github/url-rest-api "https://api.github.com/users")
 
-(defun github/clone-repo (username password repo out-dir)
+(defun github/clone-repo (username password clone-url out-dir)
   "Clone GitHub repo."
   (interactive
    (let ((username (read-string (concat "Username (" github/default-username "): ") nil nil github/default-username))
@@ -13,10 +13,10 @@
      (list
       username
       password
-      (completing-read "Repo: " (github/get-repos username password user))
+      (replace-regexp-in-string "^[^:]+: *" "" (completing-read "Repo: " (github/get-repos username password user)))
       (read-directory-name "Output dir: "))))
   (let ((default-directory out-dir))
-    (async-shell-command (concat "git clone " (replace-regexp-in-string "^[^:]+: *" "" repo))))
+    (async-shell-command (concat "git clone " clone-url)))
   (dired out-dir))
 
 (defun github/get-repos (username password user)
