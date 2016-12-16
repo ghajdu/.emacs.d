@@ -57,7 +57,6 @@
      ;; fill-column-indicator
      ;; gist
      ;; highlight-escape-sequences
-     ;; htmlize
      ;; hydra
      ;; nodejs-repl
      ;; prodigy
@@ -87,11 +86,14 @@
      groovy-mode
      groovy-mode
      guide-key
+     htmlize
      ido-at-point
      ido-ubiquitous
      ido-vertical-mode
+     iy-go-to-char
      js2-mode
      json-mode
+     key-chord
      magit
      markdown-mode
      move-text
@@ -106,9 +108,9 @@
      undo-tree
      visual-regexp
      wgrep
+     yaml-mode
      yasnippet
-     zoom-frm
-     )))
+     zoom-frm)))
 
 (condition-case nil
     (init--install-packages)
@@ -140,15 +142,19 @@
 (eval-after-load 'dired '(require 'setup-dired))
 (eval-after-load 'magit '(require 'setup-magit))
 (eval-after-load 'grep '(require 'setup-rgrep))
+(eval-after-load 'multiple-cursors '(require 'setup-iy-go-to-char))
 ;; (eval-after-load 'shell '(require 'setup-shell))
 (require 'setup-hippie)
-(require 'setup-yasnippet)
+(require 'key-chord)
+(key-chord-mode 1)
+(require 'setup-paredit)
 ;; (require 'setup-perspective)
+(require 'setup-restclient)
+(require 'setup-yaml)
+(require 'setup-yasnippet)
 ;; (require 'setup-ffip)
 ;; (require 'setup-html-mode)
-(require 'setup-paredit)
 (require 'setup-webjump)
-
 
 ;; (require 'prodigy)
 ;; (global-set-key (kbd "C-x M-m") 'prodigy)
@@ -262,4 +268,3 @@
 
 ;; Company mode everywhere
 (add-hook 'after-init-hook 'global-company-mode)
-

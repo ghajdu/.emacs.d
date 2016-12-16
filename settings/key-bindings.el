@@ -8,8 +8,18 @@
 (global-set-key (kbd "C-:") 'hippie-expand-lines)
 (global-set-key (kbd "C-,") 'completion-at-point)
 
-;; (require 'misc)
-;; (global-set-key (kbd "s-.") 'copy-from-above-command)
+;; Misc functions
+(require 'misc)
+(global-set-key (kbd "M-s-<up>") 'copy-from-above-command)
+(global-set-key (kbd "M-s-<down>") (λ (forward-line 1) (open-line 1) (copy-from-above-command)))
+(global-set-key (kbd "M-s-<right>") (λ (copy-from-above-command 1)))
+(global-set-key (kbd "M-s-<left>") (λ (copy-from-above-command -1) (forward-char -1) (delete-char -1)))
+
+;; Zap to char
+(global-set-key (kbd "M-z") 'zap-up-to-char)
+(global-set-key (kbd "s-z") (lambda (char) (interactive "cZap up to char backwards: ") (zap-up-to-char -1 char)))
+(global-set-key (kbd "M-Z") (lambda (char) (interactive "cZap to char: ") (zap-to-char 1 char)))
+(global-set-key (kbd "s-Z") (lambda (char) (interactive "cZap to char backwards: ") (zap-to-char -1 char)))
 
 ;; Smart M-x
 (global-set-key (kbd "M-x") 'smex)
@@ -22,25 +32,17 @@
 ;; Expand region (increases selected region by semantic units)
 (global-set-key (if is-mac (kbd "C-+") (kbd "C-'")) 'er/expand-region)
 
-;; ;; Experimental multiple-cursors
+;; Experimental multiple-cursors
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C-S-c C-e") 'mc/edit-ends-of-lines)
 (global-set-key (kbd "C-S-c C-a") 'mc/edit-beginnings-of-lines)
 
-;; ;; Mark additional regions matching current region
+;; Mark additional regions matching current region
 (global-set-key (kbd "M-ä") 'mc/mark-all-dwim)
 (global-set-key (kbd "C-å") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-ä") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-Ä") 'mc/mark-more-like-this-extended)
 (global-set-key (kbd "M-å") 'mc/mark-all-in-region)
-
-;; ;; Symbol and word specific mark-more
-;; (global-set-key (kbd "s-æ") 'mc/mark-next-word-like-this)
-;; (global-set-key (kbd "s-å") 'mc/mark-previous-word-like-this)
-;; (global-set-key (kbd "M-s-æ") 'mc/mark-all-words-like-this)
-;; (global-set-key (kbd "s-Æ") 'mc/mark-next-symbol-like-this)
-;; (global-set-key (kbd "s-Å") 'mc/mark-previous-symbol-like-this)
-;; (global-set-key (kbd "M-s-Æ") 'mc/mark-all-symbols-like-this)
 
 ;; ;; Extra multiple cursors stuff
 ;; (global-set-key (kbd "C-~") 'mc/reverse-regions)
@@ -49,11 +51,11 @@
 
 ;; (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
 
-;; ;; Set anchor to start rectangular-region-mode
+;; Set anchor to start rectangular-region-mode
 (global-set-key (kbd "H-SPC") 'set-rectangular-region-anchor)
 
-;; ;; Replace rectangle-text with inline-string-rectangle
-;;(global-set-key (kbd "C-x r t") 'inline-string-rectangle)
+;; Replace rectangle-text with inline-string-rectangle
+(global-set-key (kbd "C-x r t") 'mc/edit-lines)
 
 ;; ;; Quickly jump in document with ace-jump-mode
 (define-key global-map (kbd "C-ö") 'ace-jump-mode)
@@ -111,14 +113,8 @@
 ;; (global-set-key (kbd "C-z") 'shell)
 (global-set-key (kbd "C-x M-z") 'suspend-frame)
 
-;; ;; Zap to char
-;; (global-set-key (kbd "M-z") 'zap-up-to-char)
-;; (global-set-key (kbd "s-z") (lambda (char) (interactive "cZap up to char backwards: ") (zap-up-to-char -1 char)))
-
-;; (global-set-key (kbd "M-Z") (lambda (char) (interactive "cZap to char: ") (zap-to-char 1 char)))
-;; (global-set-key (kbd "s-Z") (lambda (char) (interactive "cZap to char backwards: ") (zap-to-char -1 char)))
-
 ;; ;; iy-go-to-char - like f in Vim
+;;
 ;; (global-set-key (kbd "M-m") 'jump-char-forward)
 ;; (global-set-key (kbd "M-M") 'jump-char-backward)
 ;; (global-set-key (kbd "s-m") 'jump-char-backward)
@@ -197,6 +193,15 @@
 ;; (global-set-key (kbd "M-<down>") 'smart-down)
 ;; (global-set-key (kbd "M-<left>") 'smart-backward)
 ;; (global-set-key (kbd "M-<right>") 'smart-forward)
+
+;; Define some keychords
+(key-chord-define-global "fg" 'iy-go-to-char)
+(key-chord-define-global "df" 'iy-go-to-char-backward)
+(key-chord-define-global ";;" "\C-e;")
+(key-chord-define-global ",." "{};\C-b\C-b")
+(key-chord-define-global ".-" "[]\C-b")
+(key-chord-define-global "\'\'" "''\C-b")
+(key-chord-define-global "\"\"" "\"\"\C-b") 
 
 ;; Webjump let's you quickly search google, wikipedia, emacs wiki
 (global-set-key (kbd "C-x g") 'webjump)
