@@ -51,20 +51,12 @@
 ;; Install extensions if they're missing
 (defun init--install-packages ()
   (packages-install
-   '(;; css-eldoc
-     ;; dockerfile-mode
-     ;; edn
-     ;; fill-column-indicator
-     ;; gist
-     ;; highlight-escape-sequences
+   '(;; gist
      ;; hydra
      ;; nodejs-repl
-     ;; prodigy
      ;; simple-httpd
      ;; smartparens
-     ;; string-edit
      ;; whitespace-cleanup-mode
-     ;; yesql-ghosts
      ace-jump-mode
      browse-kill-ring
      change-inner

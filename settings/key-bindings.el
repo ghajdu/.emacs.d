@@ -148,8 +148,8 @@
 
 ;; (global-set-key (kbd "s-y") 'bury-buffer)
 
-;; ;; Revert without any fuss
-;; (global-set-key (kbd "M-<escape>") (λ (revert-buffer t t)))
+;; Revert without any fuss
+(global-set-key (kbd "M-<escape>") (λ (revert-buffer t t)))
 
 ;; ;; Edit file with sudo
 ;; (global-set-key (kbd "M-s e") 'sudo-edit)
@@ -172,8 +172,8 @@
 ;; ;; Indentation help
 ;; (global-set-key (kbd "M-j") (λ (join-line -1)))
 
-;; ;; Help should search more than just commands
-;; (global-set-key (kbd "<f1> a") 'apropos)
+;; Help should search more than just commands
+(global-set-key (kbd "<f1> a") 'apropos)
 
 ;; ;; Should be able to eval-and-replace anywhere.
 ;; (global-set-key (kbd "C-c C-e") 'eval-and-replace)

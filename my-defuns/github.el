@@ -4,27 +4,23 @@
 (defvar github/default-username "bjuvensjo")
 (defvar github/url-rest-api "https://api.github.com/users")
 
-(defun github/clone-repo (username password clone-url out-dir)
-  "Clone GitHub repo."
+(defun github/clone-repo (clone-url out-dir)
+  "Clone GitHub repo. Requires configured oauth, i.e. git config --global github.oauth-token <your token>"
   (interactive
-   (let ((username (read-string (concat "Username (" github/default-username "): ") nil nil github/default-username))
-         (password (read-passwd "Password: "))
-         (user (read-string (concat "User (" github/default-username "): ") nil nil github/default-username)))
+   (let ((user (read-string (concat "User (" github/default-username "): ") nil nil github/default-username)))
      (list
-      username
-      password
-      (replace-regexp-in-string "^[^:]+: *" "" (completing-read "Repo: " (github/get-repos username password user)))
+      (replace-regexp-in-string "^[^:]+: *" "" (completing-read "Repo: " (github/get-repos user)))
       (read-directory-name "Output dir: "))))
   (let ((default-directory out-dir))
     (async-shell-command (concat "git clone " clone-url)))
   (dired out-dir))
 
-(defun github/get-repos (username password user)
-  "Get GitHub repos."
+(defun github/get-repos (user)
+  "Get GitHub repos. Requires configured oauth, i.e. git config --global github.oauth-token <your token>"
   (let ((url-request-method "GET")
         (url-request-extra-headers
          (list (cons "Content-Type" "application/json")
-               (cons "Authorization" (concat "Basic " (base64-encode-string (concat username ":" password)))))))
+               (cons "Authorization" (concat "token " (shell-command-to-string "git config --global --get github.oauth-token  | tr -d '\n\r'"))))))
     (save-excursion
       (switch-to-buffer (url-retrieve-synchronously (concat github/url-rest-api "/" user "/repos")))
       (beginning-of-buffer)
