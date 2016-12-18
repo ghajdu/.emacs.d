@@ -19,7 +19,6 @@
 
 ;; This is not really good...
 ;; (setq warning-minimum-level :emergency)
-
 (setq settings-dir (expand-file-name "settings" emacs.d-directory))
 
 ;; ;; Set up load path
@@ -53,8 +52,6 @@
   (packages-install
    '(;; gist
      ;; hydra
-     ;; nodejs-repl
-     ;; simple-httpd
      ;; smartparens
      ;; whitespace-cleanup-mode
      ace-jump-mode
@@ -70,6 +67,7 @@
      elisp-slime-nav
      expand-region
      f
+     find-file-in-project
      flx
      flx-ido
      flycheck
@@ -144,7 +142,7 @@
 (require 'setup-restclient)
 (require 'setup-yaml)
 (require 'setup-yasnippet)
-;; (require 'setup-ffip)
+(require 'setup-ffip)
 ;; (require 'setup-html-mode)
 (require 'setup-webjump)
 
