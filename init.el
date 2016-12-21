@@ -146,9 +146,6 @@
 ;; (require 'setup-html-mode)
 (require 'setup-webjump)
 
-;; (require 'prodigy)
-;; (global-set-key (kbd "C-x M-m") 'prodigy)
-
 ;; Font lock dash.el
 (eval-after-load "dash" '(dash-enable-font-lock))
 
@@ -187,8 +184,6 @@
 
 ;; Visual regexp
 (require 'visual-regexp)
-(define-key global-map (kbd "M-&") 'vr/query-replace)
-(define-key global-map (kbd "M-/") 'vr/replace)
 
 ;; Functions (load all files in defuns-dir)
 (setq defuns-dir (expand-file-name "defuns" emacs.d-directory))
@@ -204,8 +199,7 @@
 
 (require 'expand-region)
 (require 'multiple-cursors)
-;; (require 'delsel)
-;; (require 'jump-char)
+(require 'jump-char)
 ;; (require 'eproject)
 (require 'wgrep)
 ;; (require 'smart-forward)

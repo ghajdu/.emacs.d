@@ -92,17 +92,17 @@
 ;; (global-set-key (kbd "C-c C--") 'replace-next-underscore-with-camel)
 ;; (global-set-key (kbd "M-s M--") 'snakeify-current-word)
 
-;; ;; Change word separators
-;; (global-unset-key (kbd "C-x +")) ;; used to be balance-windows
-;; (global-set-key (kbd "C-x + -") (λ (replace-region-by 's-dashed-words)))
-;; (global-set-key (kbd "C-x + _") (λ (replace-region-by 's-snake-case)))
-;; (global-set-key (kbd "C-x + c") (λ (replace-region-by 's-lower-camel-case)))
-;; (global-set-key (kbd "C-x + C") (λ (replace-region-by 's-upper-camel-case)))
+;; Change word separators
+(global-unset-key (kbd "C-x +")) ;; used to be balance-windows
+(global-set-key (kbd "C-x + -") (λ (replace-region-by 's-dashed-words)))
+(global-set-key (kbd "C-x + _") (λ (replace-region-by 's-snake-case)))
+(global-set-key (kbd "C-x + c") (λ (replace-region-by 's-lower-camel-case)))
+(global-set-key (kbd "C-x + C") (λ (replace-region-by 's-upper-camel-case)))
 
-;; ;; Killing text
+;; Killing text
 ;; (global-set-key (kbd "C-S-k") 'kill-and-retry-line)
-;; (global-set-key (kbd "C-w") 'kill-region-or-backward-word)
-;; (global-set-key (kbd "C-c C-w") 'kill-to-beginning-of-line)
+(global-set-key (kbd "C-w") 'kill-region-or-backward-word)
+(global-set-key (kbd "C-c C-w") 'kill-to-beginning-of-line)
 
 ;; ;; Use M-w for copy-line if no active region
 (global-set-key (kbd "M-w") 'save-region-or-current-line)
@@ -112,12 +112,6 @@
 ;; ;; Make shell more convenient, and suspend-frame less
 ;; (global-set-key (kbd "C-z") 'shell)
 (global-set-key (kbd "C-x M-z") 'suspend-frame)
-
-;; ;; iy-go-to-char - like f in Vim
-;;
-;; (global-set-key (kbd "M-m") 'jump-char-forward)
-;; (global-set-key (kbd "M-M") 'jump-char-backward)
-;; (global-set-key (kbd "s-m") 'jump-char-backward)
 
 ;; ;; vim's ci and co commands
 (global-set-key (kbd "M-I") 'change-inner)
@@ -161,7 +155,7 @@
 ;; (windmove-default-keybindings) ;; Shift+direction
 (global-set-key (kbd "C-x -") 'toggle-window-split)
 (global-set-key (kbd "C-x C--") 'rotate-windows)
-;;(global-unset-key (kbd "C-x C-+")) ;; don't zoom like this
+(global-unset-key (kbd "C-x C-+")) ;; don't zoom like this
 (global-set-key (kbd "C-x C-+") 'zoom-in/out)
 
 (global-set-key (kbd "C-x 3") 'split-window-right-and-move-there-dammit)
@@ -194,14 +188,19 @@
 ;; (global-set-key (kbd "M-<left>") 'smart-backward)
 ;; (global-set-key (kbd "M-<right>") 'smart-forward)
 
+;; jump-char - like f in Vim
+(global-set-key (kbd "M-m") 'jump-char-forward)
+(global-set-key (kbd "M-M") 'jump-char-backward)
+(global-set-key (kbd "s-m") 'jump-char-backward)
+
 ;; Define some keychords
-(key-chord-define-global "fg" 'iy-go-to-char)
-(key-chord-define-global "df" 'iy-go-to-char-backward)
+(key-chord-define-global "fg" 'jump-char-forward)
+(key-chord-define-global "df" 'jump-char-backward)
 (key-chord-define-global ";;" "\C-e;")
 (key-chord-define-global ",." "{};\C-b\C-b")
 (key-chord-define-global ".-" "[]\C-b")
 (key-chord-define-global "\'\'" "''\C-b")
-(key-chord-define-global "\"\"" "\"\"\C-b") 
+(key-chord-define-global "\"\"" "\"\"\C-b")
 
 ;; Webjump let's you quickly search google, wikipedia, emacs wiki
 (global-set-key (kbd "C-x g") 'my-webjump)
@@ -227,13 +226,9 @@
 ;; (global-set-key (kbd "H-*") 'beginning-of-buffer) ;; H-p
 ;; (global-set-key (kbd "H-n") 'end-of-buffer)
 
-;; ;; Convenience on ThinkPad Keyboard: Use back/forward as pg up/down
-;; (global-set-key (kbd "<XF86Back>") 'scroll-down)
-;; (global-set-key (kbd "<XF86Forward>") 'scroll-up)
-;; (global-set-key (kbd "<XF86WakeUp>") 'beginning-of-buffer)
-
-;; ;; Query replace regex key binding
-;; (global-set-key (kbd "M-&") 'query-replace-regexp)
+;; Visual regexp
+(define-key global-map (kbd "M-&") 'vr/query-replace)
+(define-key global-map (kbd "M-/") 'vr/replace)
 
 ;; ;; Yank selection in isearch
 ;; (define-key isearch-mode-map (kbd "C-o") 'isearch-yank-selection)
@@ -276,7 +271,6 @@
 ;; Line movement
 (global-set-key (kbd "<C-S-down>") 'move-text-down)
 (global-set-key (kbd "<C-S-up>") 'move-text-up)
-
 ;; ;; Fold the active region
 ;; (global-set-key (kbd "C-c C-f") 'fold-this-all)
 ;; (global-set-key (kbd "C-c C-F") 'fold-this)
@@ -305,7 +299,8 @@
 (global-set-key (kbd "C-x C-k") 'delete-current-buffer-file)
 
 ;; ;; Jump from file to containing directory
-;; (global-set-key (kbd "C-x C-j") 'dired-jump) (autoload 'dired-jump "dired")
+;; (global-set-key (kbd "C-x C-j") 'dired-jump)
+;; (autoload 'dired-jump "dired")
 ;; (global-set-key (kbd "C-x M-j") '(λ (dired-jump 1)))
 
 ;; Easy-mode fullscreen rgrep
@@ -393,4 +388,3 @@
    (define-key emacs-lisp-mode-map (kbd "C-c C-k") 'ert-t)))
 
 (provide 'key-bindings)
-
