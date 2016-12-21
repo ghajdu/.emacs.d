@@ -50,9 +50,7 @@
 ;; Install extensions if they're missing
 (defun init--install-packages ()
   (packages-install
-   '(;; gist
-     ;; hydra
-     ;; smartparens
+   '(;; gist    
      ;; whitespace-cleanup-mode
      ace-jump-mode
      browse-kill-ring
@@ -77,6 +75,7 @@
      groovy-mode
      guide-key
      htmlize
+     hydra
      ido-at-point
      ido-ubiquitous
      ido-vertical-mode
@@ -93,6 +92,7 @@
      restclient
      s
      shell-command
+     smartparens
      smex
      smooth-scrolling
      undo-tree
@@ -140,6 +140,7 @@
 (require 'setup-paredit)
 ;; (require 'setup-perspective)
 (require 'setup-restclient)
+(require 'setup-smartparens)
 (require 'setup-yaml)
 (require 'setup-yasnippet)
 (require 'setup-ffip)
@@ -148,20 +149,6 @@
 
 ;; Font lock dash.el
 (eval-after-load "dash" '(dash-enable-font-lock))
-
-;; Default setup of smartparens
-;; (require 'smartparens-config)
-;; (setq sp-
-;; autoescape-string-quote nil)
-;; (--each '(css-mode-hook
-;;           restclient-mode-hook
-;;           js-mode-hook
-;;           java-mode
-;;           ruby-mode
-;;           markdown-mode
-;;           groovy-mode
-;;           scala-mode)
-;;   (add-hook it 'turn-on-smartparens-mode))
 
 ;; Language specific setup files
 (eval-after-load 'js2-mode '(require 'setup-js2-mode))
@@ -182,9 +169,6 @@
 ;; (hes-mode)
 ;; (put 'font-lock-regexp-grouping-backslash 'face-alias 'font-lock-builtin-face)
 
-;; Visual regexp
-(require 'visual-regexp)
-
 ;; Functions (load all files in defuns-dir)
 (setq defuns-dir (expand-file-name "defuns" emacs.d-directory))
 (dolist (file (directory-files defuns-dir t "\\w+"))
@@ -201,6 +185,7 @@
 (require 'multiple-cursors)
 (require 'jump-char)
 ;; (require 'eproject)
+(require 'visual-regexp)
 (require 'wgrep)
 ;; (require 'smart-forward)
 (require 'change-inner)
