@@ -1,9 +1,15 @@
+;;; jenkins.el --- Jenkins functions
+
+;;; Commentary:
+
+;;; Code:
+
 (require 's)
 
 (defvar jenkins/base-url "http://10.46.64.51:8080/job/")
 
 (defun jenkins/create-url (uri)
-  "Creates url with uri."
+  "Create url with URI."
   (interactive "s:uri")
   (concat jenkins/base-url uri))
 
@@ -11,17 +17,17 @@
   (should (equal (jenkins/create-url "uri") (concat jenkins/base-url "uri"))))
 
 (defun jenkins/get-config (url)
-  "Get config from url."
+  "Get config from URL."
   (interactive "surl:")
   (with-temp-buffer
     ;; Implement correctly!!!
-    (insert-file-contents "/Users/ei4577/git/jenkins/LPLANO_app.getprocessinstances.v1_0_develop/config.xml") 
+    (insert-file-contents "/Users/ei4577/git/jenkins/LPLANO_app.getprocessinstances.v1_0_develop/config.xml")
     (buffer-string)))
 
 ;;(jenkins/get-config (jenkins/create-url "LPLANO_app.getprocessinstances.v1_0_1.0.0/config.xml"))
 
 (defun jenkins/create-template (config)
-  "Creates a template from the config."
+  "Create a template from the CONFIG."
   (interactive "sconfig:")
   (let* ((description (nth 1 (s-match "<description>\\(.*\\)</description>" config)))
          (build (cdr (s-match "\\(.*?\\)_\\(.*\\)_\\(.*\\)" description)))
@@ -36,7 +42,7 @@
                  "<description>##PROJECT##_##repository##_##branch##</description>##project##")))
 
 (defun jenkins/create-config (template project repository branch)
-  "Creates a jenkins config based on template."
+  "Create a jenkins config based on TEMPLATE for PROJECT, REPOSITORY and BRANCH."
   (interactive "ftemplate:\nsproject:\nsrepository:\nsbranch:")
   (s-replace-all (list (cons "##PROJECT##" (upcase project))
                        (cons "##project##" (downcase project))
@@ -49,7 +55,7 @@
                  "<description>LHAUTO_foo.bar.baz.v1_0_develop</description>lhauto")))
 
 (defun jenkins/create-uri (config)
-  "Creates uri from config."
+  "Create uri from CONFIG."
   (interactive "fconfig:")
   (let* ((description (nth 1 (s-match "<description>\\(.*\\)</description>" config))))
     (concat description "/config.xml")))
@@ -59,7 +65,7 @@
                  "LPLANO_app.getprocessinstances.v1_0_1.0.0/config.xml")))
 
 (defun jenkins/create-job (config)
-  "Creates a job with config."
+  "Create a job with CONFIG."
   (interactive "fconfig:")
   ;; Call jenkins with config
   (let* ((url (jenkins/create-url (jenkins/create-uri config)))
@@ -68,3 +74,5 @@
   )
 
 (provide 'jenkins)
+
+;;; jenkins.el ends here

@@ -1,15 +1,21 @@
+;;; maven.el --- Maven functions
+
+;;; Commentary:
+
+;;; Code:
+
 (require 'git)
 
-(defvar pom-template (expand-file-name "my-defuns/pom-template.xml" emacs.d-directory) "pom template file.")
+(defvar pom-template (expand-file-name "my-defuns/pom-template.xml" emacs.d-directory) "Pom template file.")
 
 (defun maven/mp (base-dir group-id artifact-id version)
-  "Creates a maven project and a git repository."
+  "Create a maven project and a git repository in BASE-DIR with GROUP-ID, ARTIFACT-ID and VERSION attributes."
   (interactive "Dbase-dir:\nsgroup-id:\nsartifact-id:\nsversion (1.0.0-SNAPSHOT):")
   (let ((version (if (s-blank? (s-trim version))
                      "1.0.0-SNAPSHOT"
                    version)))
-    (let ((out-dir (concat base-dir "/" artifact-id "/"))         
-          (package-path (s-replace-all '(("." . "/")) group-id))                 
+    (let ((out-dir (concat base-dir "/" artifact-id "/"))
+          (package-path (s-replace-all '(("." . "/")) group-id))
           (pom-content (s-replace-all (list (cons "###groupId###" group-id)
                                             (cons "###artifactId###" artifact-id)
                                             (cons "###version###" version))
@@ -30,3 +36,5 @@
         (git/git-init out-dir)))))
 
 (provide 'maven)
+
+;;; maven.el ends here

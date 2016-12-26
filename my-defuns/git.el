@@ -1,5 +1,13 @@
+;;; git.el --- git functions
+
+;;; Commentary:
+
+;;; Code:
+
+(require 's)
+
 (defun git/create-git-ignore (dir)
-  "Creates a .gitignore file."
+  "Create a .gitignore file in DIR."
   (interactive "Ddir:")
   (with-temp-buffer
     (let ((file (concat dir ".gitignore")))
@@ -10,7 +18,7 @@
                       file)))))
 
 (defun git/git-init (dir)
-  "Initializes a git repository with a .gitignore file and master and develop branches."
+  "Initialize a git repository with a .gitignore file and master and develop branches in DIR."
   (interactive "D")
   (git/create-git-ignore dir)
   (shell-command "git init")
@@ -22,3 +30,5 @@
   (shell-command "git commit -am \"initial develop version\""))
 
 (provide 'git)
+
+;;; git.el ends here

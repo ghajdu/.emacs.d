@@ -1,8 +1,3 @@
-;; Frame window size
-;; (set-frame-parameter nil 'fullscreen 'fullboth)
-(add-to-list 'initial-frame-alist '(width  . 166))
-(add-to-list 'initial-frame-alist '(height . 47))
-
 ; Set fringes
 (set-fringe-style '(10 . 0))
 
@@ -19,7 +14,6 @@
 
 ;; This is not really good...
 ;; (setq warning-minimum-level :emergency)
-
 (setq settings-dir (expand-file-name "settings" emacs.d-directory))
 
 ;; ;; Set up load path
@@ -51,21 +45,8 @@
 ;; Install extensions if they're missing
 (defun init--install-packages ()
   (packages-install
-   '(;; css-eldoc
-     ;; dockerfile-mode
-     ;; edn
-     ;; fill-column-indicator
-     ;; gist
-     ;; highlight-escape-sequences
-     ;; htmlize
-     ;; hydra
-     ;; nodejs-repl
-     ;; prodigy
-     ;; simple-httpd
-     ;; smartparens
-     ;; string-edit
+   '(;; gist    
      ;; whitespace-cleanup-mode
-     ;; yesql-ghosts
      ace-jump-mode
      browse-kill-ring
      change-inner
@@ -79,6 +60,7 @@
      elisp-slime-nav
      expand-region
      f
+     find-file-in-project
      flx
      flx-ido
      flycheck
@@ -87,9 +69,15 @@
      groovy-mode
      groovy-mode
      guide-key
+     htmlize
+     hydra
      ido-at-point
      ido-ubiquitous
      ido-vertical-mode
+     iy-go-to-char
+     js2-mode
+     json-mode
+     key-chord
      magit
      markdown-mode
      move-text
@@ -99,14 +87,15 @@
      restclient
      s
      shell-command
+     smartparens
      smex
      smooth-scrolling
      undo-tree
      visual-regexp
      wgrep
+     yaml-mode
      yasnippet
-     zoom-frm
-     )))
+     zoom-frm)))
 
 (condition-case nil
     (init--install-packages)
@@ -138,36 +127,26 @@
 (eval-after-load 'dired '(require 'setup-dired))
 (eval-after-load 'magit '(require 'setup-magit))
 (eval-after-load 'grep '(require 'setup-rgrep))
+(eval-after-load 'multiple-cursors '(require 'setup-iy-go-to-char))
 ;; (eval-after-load 'shell '(require 'setup-shell))
 (require 'setup-hippie)
-(require 'setup-yasnippet)
-;; (require 'setup-perspective)
-;; (require 'setup-ffip)
-;; (require 'setup-html-mode)
+(require 'key-chord)
+(key-chord-mode 1)
 (require 'setup-paredit)
-
-;; (require 'prodigy)
-;; (global-set-key (kbd "C-x M-m") 'prodigy)
+;; (require 'setup-perspective)
+(require 'setup-restclient)
+(require 'setup-smartparens)
+(require 'setup-yaml)
+(require 'setup-yasnippet)
+(require 'setup-ffip)
+;; (require 'setup-html-mode)
+(require 'setup-webjump)
 
 ;; Font lock dash.el
 (eval-after-load "dash" '(dash-enable-font-lock))
 
-;; Default setup of smartparens
-;; (require 'smartparens-config)
-;; (setq sp-
-;; autoescape-string-quote nil)
-;; (--each '(css-mode-hook
-;;           restclient-mode-hook
-;;           js-mode-hook
-;;           java-mode
-;;           ruby-mode
-;;           markdown-mode
-;;           groovy-mode
-;;           scala-mode)
-;;   (add-hook it 'turn-on-smartparens-mode))
-
 ;; Language specific setup files
-;; (eval-after-load 'js2-mode '(require 'setup-js2-mode))
+(eval-after-load 'js2-mode '(require 'setup-js2-mode))
 (eval-after-load 'clojure-mode '(require 'setup-clojure-mode))
 (eval-after-load 'markdown-mode '(require 'setup-markdown-mode))
 
@@ -185,11 +164,6 @@
 ;; (hes-mode)
 ;; (put 'font-lock-regexp-grouping-backslash 'face-alias 'font-lock-builtin-face)
 
-;; Visual regexp
-(require 'visual-regexp)
-(define-key global-map (kbd "M-&") 'vr/query-replace)
-(define-key global-map (kbd "M-/") 'vr/replace)
-
 ;; Functions (load all files in defuns-dir)
 (setq defuns-dir (expand-file-name "defuns" emacs.d-directory))
 (dolist (file (directory-files defuns-dir t "\\w+"))
@@ -204,9 +178,9 @@
 
 (require 'expand-region)
 (require 'multiple-cursors)
-;; (require 'delsel)
-;; (require 'jump-char)
+(require 'jump-char)
 ;; (require 'eproject)
+(require 'visual-regexp)
 (require 'wgrep)
 ;; (require 'smart-forward)
 (require 'change-inner)
@@ -258,4 +232,9 @@
 
 ;; Company mode everywhere
 (add-hook 'after-init-hook 'global-company-mode)
+
+;; Frame window size
+(set-frame-parameter nil 'fullscreen 'fullboth)
+;; (add-to-list 'initial-frame-alist '(width  . 166))
+;; (add-to-list 'initial-frame-alist '(height . 47))
 

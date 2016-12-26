@@ -1,3 +1,9 @@
+;;; bitbucket.el --- BitBucket functions
+
+;;; Commentary:
+
+;;; Code:
+
 (require 'url)
 
 ;; Modify below vars as suits your needs
@@ -6,12 +12,13 @@
 (defvar bitbucket/url-rest-api "http://cuso.edb.se/stash/rest/api/1.0/")
 
 (defun bitbucket/get-project-keys ()
-  "Gets the Bitbucket projects keys that are 'cached' in bitbucket/project-keys-file"
+  "Gets the Bitbucket projects keys that are 'cached' in bitbucket/project-keys-file."
   (split-string (with-temp-buffer
                   (insert-file-contents bitbucket/project-keys-file)
                   (buffer-string)) "\n" t))
 
 (defun bitbucket/get-clone-commands ()
+  "Get clone commands."
   (goto-char 0)
   (let ((commands (list)))
     (while (re-search-forward "clone.*?\"\\(http:.*?git\\)" nil t)
@@ -22,7 +29,7 @@
     (mapconcat 'identity commands "\n")))
 
 (defun bitbucket/clone-repos (project repo-regexp out-dir username password)
-  "Clone Bitbucket repos."
+  "Clone Bitbucket repos from PROJECT matching REPO-REGEXP to OUT-DIR.  USERNAME and PASSWORD are used for authentication."
   (interactive
    (list
     (replace-regexp-in-string ":.*" "" (completing-read "Project: " (bitbucket/get-project-keys)))
@@ -46,6 +53,7 @@
                     (list (if (string-suffix-p "/" out-dir) out-dir (concat out-dir "/")) repo-regexp)))))
 
 (defun bitbucket/get-projects ()
+  "Get projects."
   (goto-char 0)
   (let ((projects (list)))
     (while (re-search-forward "\"key\":\"\\([^\"]+\\)\".*?\"name\":\"\\([^\"]+\\)" nil t)
@@ -55,7 +63,7 @@
     (mapconcat 'identity projects "\n")))
 
 (defun bitbucket/update-project-keys (username password)
-  "Updates the Bitbucket projects keys that are 'cached' in bitbucket/project-keys-file"    
+  "Update the Bitbucket projects keys that are 'cached' in bitbucket/project-keys-file.  USERNAME and PASSWORD are used to retrieve project keys."
   (interactive
    (list
     (read-string (concat "Username (" bitbucket/default-username "): ") nil nil bitbucket/default-username)
@@ -71,10 +79,12 @@
                       (let ((projects (bitbucket/get-projects)))
                         (erase-buffer)
                         (insert projects)
-                        (sort-lines nil (point-min) (point-max))                        
+                        (sort-lines nil (point-min) (point-max))
                         (write-file bitbucket/project-keys-file)
                         (kill-buffer)
                         ))
                     ))))
 
 (provide 'bitbucket)
+
+;;; bitbucket.el ends here

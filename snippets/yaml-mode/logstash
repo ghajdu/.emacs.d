@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: logstash.yml
+# key: logstash
+# --
+input { 
+stdin { 
+} 
+}
+filter {
+
+}
+output {
+$0#elasticsearch { hosts => ["localhost:9200"] }
+stdout { codec => rubydebug }
+}

@@ -1,4 +1,11 @@
+;;; rovar-spraket.el --- Rövarspråket
+
+;;; Commentary:
+
+;;; Code:
+
 (defun rövarspråket()
+  "Translate buffer to rövarspråket."
   (interactive)
   (save-excursion
     (goto-char 1)
@@ -16,5 +23,4 @@
 
 (provide 'rovar-spraket)
 
-
-
+;;; rovar-spraket.el ends here
