@@ -34,13 +34,14 @@
                    (setq tbl (make-hash-table :test 'equal))
                    (let (ido-list)
                      (mapc (lambda (path)
-                             (let (key)
-                               ;; format path for display in ido list
-                               (setq key (replace-regexp-in-string "\\(.*?\\)\\([^/]+?\\)$" "\\2" path))
-                               ;; strip root
-                               (setq key (replace-regexp-in-string root "" key))
-                               ;; remove trailing | or /
-                               (setq key (replace-regexp-in-string "\\(|\\|/\\)$" "" key))
+                             (let ((key
+                                    (->> path
+                                         ;; format path for display in ido list
+                                         (replace-regexp-in-string "\\(.*?\\)\\([^/]+?\\)$" "\\2")
+                                         ;; strip root
+                                         (replace-regexp-in-string root "")
+                                         ;; remove trailing | or /
+                                         (replace-regexp-in-string "\\(|\\|/\\)$" ""))))
                                (puthash key path tbl)
                                (push key ido-list)))
                            resourceFiles)
