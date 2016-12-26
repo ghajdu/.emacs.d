@@ -1,8 +1,3 @@
-;; Frame window size
-;; (set-frame-parameter nil 'fullscreen 'fullboth)
-(add-to-list 'initial-frame-alist '(width  . 166))
-(add-to-list 'initial-frame-alist '(height . 47))
-
 ; Set fringes
 (set-fringe-style '(10 . 0))
 
@@ -237,3 +232,9 @@
 
 ;; Company mode everywhere
 (add-hook 'after-init-hook 'global-company-mode)
+
+;; Frame window size
+(set-frame-parameter nil 'fullscreen 'fullboth)
+;; (add-to-list 'initial-frame-alist '(width  . 166))
+;; (add-to-list 'initial-frame-alist '(height . 47))
+

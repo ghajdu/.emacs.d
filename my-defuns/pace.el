@@ -1,4 +1,11 @@
+;;; pace.el --- Pace
+
+;;; Commentary:
+
+;;; Code:
+
 (defun pace (h m s km)
+  "Calculates pace given H, M, S and KM."
   (let* ((totalSeconds (+ (* h 3600) (* m 60) s))
          (minutes (truncate (/ totalSeconds km 60)))
          (seconds (round (mod (/ totalSeconds (* km 1.0)) 60))))
@@ -10,3 +17,4 @@
 
 (provide 'pace)
 
+;;; pace.el ends here

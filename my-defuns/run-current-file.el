@@ -1,3 +1,9 @@
+;;; run-current-file.el --- Run current file
+
+;;; Commentary:
+
+;;; Code:
+
 (defun run-current-file ()
   "Execute or compile the current file.
 For example, if the current buffer is the file x.pl,
@@ -29,3 +35,5 @@ File suffix is used to determine what program to run."
     (shell-command cmd-str)))
 
 (provide 'run-current-file)
+
+;;; run-current-file.el ends here

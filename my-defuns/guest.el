@@ -1,14 +1,21 @@
+;;; guest.el --- Count guests
+
+;;; Commentary:
+
+;;; Code:
+
 (defun guest/insert-count (count)
+  "Insert COUNT."
   (if (not (search-forward-regexp " *([0-9]+) *$" (line-end-position) t))
       (search-forward-regexp " *$" (line-end-position) t))
   (replace-match (concat " (" (number-to-string count) ")")))
 
 (defun guest/count ()
-  "Count guests per section and inserts number in section headers.
+  "Count guests per section and insert number in section headers.
 The sum of guests is placed in the first header."
   (interactive)
   (save-excursion
-    (beginning-of-buffer)
+    (goto-char (point-min))
     (let ((sum 0))
       (while (search-forward-regexp "^\\*\\*" (point-max) t)
         (forward-line)
@@ -18,8 +25,10 @@ The sum of guests is placed in the first header."
                         (- (point) 2)
                       (point-max))))
                (count (count-matches "[[:alpha:]]+"  b e)))
-          (previous-line)
+          (forward-line -1)
           (guest/insert-count count)
           (setq sum (+ sum count))))
-      (beginning-of-buffer)
+      (goto-char (point-min))
       (guest/insert-count sum))))
+
+;;; guest.el ends here
