@@ -4,8 +4,6 @@
 
 ;;; Code:
 
-(require 'dash)
-
 (defmacro -> (&rest body)
   "The thread-last macro.  Threads the BODY."
   (let ((result (pop body)))
@@ -40,7 +38,7 @@
   (let ((result (pop body))
         (name (pop body)))
     (dolist (form body result)
-      (setq result (append (-replace name result form))))))
+      (setq result (append (mapcar (lambda (el) (if (equal el name) result el)) form))))))
 
 (ert-deftest test-first-as-> ()
   (should (equal
@@ -60,8 +58,7 @@
 
 (ert-deftest test-mixed-as-> ()
   (should (equal
-           (as-> "" v
-                 (concat "a" v)
+           (as-> "a" v
                  (concat v "1" v "2" v "3" v))
            "a1a2a3a")))
 
