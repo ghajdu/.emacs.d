@@ -17,7 +17,7 @@
                   (insert-file-contents bitbucket/project-keys-file)
                   (buffer-string)) "\n" t))
 
-(defun bitbucket/get-clone-commands ()
+(defun bitbucket/get-clone-commands (repo-regexp)
   "Get clone commands."
   (goto-char 0)
   (let ((commands (list)))
@@ -25,7 +25,8 @@
       (let* ((repo-clone-url (match-string 1))
              (repo-name (replace-regexp-in-string ".*/" "" repo-clone-url))
              (repo-clone-dir (replace-regexp-in-string (regexp-quote ".") "/" (replace-regexp-in-string ".git$" "" repo-name))))
-        (add-to-list 'commands (concat "git clone " repo-clone-url " " repo-clone-dir))))
+        (if (string-match-p repo-regexp repo-name)
+            (add-to-list 'commands (concat "git clone " repo-clone-url " " repo-clone-dir)))))
     (mapconcat 'identity commands "\n")))
 
 (defun bitbucket/clone-repos (project repo-regexp out-dir username password)
@@ -47,7 +48,7 @@
                       (switch-to-buffer (current-buffer))
                       (mkdir out-dir t)
                       (let ((default-directory out-dir))
-                        (async-shell-command (bitbucket/get-clone-commands)))
+                        (async-shell-command (bitbucket/get-clone-commands repo-regexp)))
                       ;;(kill-buffer)
                       (dired out-dir))
                     (list (if (string-suffix-p "/" out-dir) out-dir (concat out-dir "/")) repo-regexp)))))
