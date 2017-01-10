@@ -212,6 +212,12 @@
 ;; (require 'my-misc)
 (when is-mac (require 'mac))
 
+;; gpg
+(setq epg-gpg-program "gpg2")
+;;(setenv "INSIDE_EMACS" (format "%s,comint" emacs-version))
+;;(pinentry-start)
+(setenv "GPG_AGENT_INFO" nil)
+
 ;; ;; Elisp go-to-definition with M-. and back again with M-,
 (autoload 'elisp-slime-nav-mode "elisp-slime-nav")
 (add-hook 'emacs-lisp-mode-hook (lambda () (elisp-slime-nav-mode t) (eldoc-mode 1)))
