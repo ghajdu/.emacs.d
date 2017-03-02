@@ -86,6 +86,35 @@
                         ))
                     ))))
 
+(defun bitbucket/create-clone-script (out-dir username password)
+  "Create Bitbucket clone script in OUT-DIR for all repositories.  USERNAME and PASSWORD are used for authentication."
+  (interactive
+   (list
+    (read-directory-name "Output dir: ")
+    (read-string (concat "Username (" bitbucket/default-username "): ") nil nil bitbucket/default-username)
+    (read-passwd "Password: ")))
+  (let ((file-name (concat (if (string-suffix-p "/" out-dir) out-dir (concat out-dir "/")) "clone-script.sh"))
+        (url-request-method "GET")
+        (url-request-extra-headers
+         (list (cons "Content-Type" "application/json")
+               (cons "Authorization" (concat "Basic " (base64-encode-string (concat username ":" password)))))))
+    (save-excursion
+      (if (file-exists-p file-name)
+          (delete-file file-name))
+      (bitbucket/update-project-keys username password)
+      (dolist (project
+               (mapcar (lambda (p) (replace-regexp-in-string ":.*" "" p)) (bitbucket/get-project-keys)))
+        (let ((repo-buffer (url-retrieve-synchronously (concat bitbucket/url-rest-api "projects/" project "/repos?limit=1000"))))
+          (if repo-buffer
+              (progn
+                (switch-to-buffer repo-buffer)
+                (let ((clone-commands (bitbucket/get-clone-commands ".*")))
+                  (erase-buffer)
+                  (insert clone-commands)
+                  (insert "\n")
+                  (write-region (point-min) (point-max) file-name t)
+                  (kill-buffer)))))))))
+
 (provide 'bitbucket)
 
 ;;; bitbucket.el ends here

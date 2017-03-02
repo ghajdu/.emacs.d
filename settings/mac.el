@@ -91,11 +91,23 @@
 (setq ispell-program-name "/usr/local/bin/aspell")
 
 ;; Open files
+;; (defun mac-open-current-file ()
+;;   (interactive)
+;;   (shell-command (concat "open \"" (buffer-file-name) "\"")))
+
 (defun mac-open-current-file ()
   (interactive)
-  (shell-command (concat "open \"" (buffer-file-name) "\"")))
+  (shell-command (concat "open \"" (if (derived-mode-p 'dired-mode) 
+                                       (dired-get-file-for-visit)
+                                     (buffer-file-name)) "\"")))
 
 (global-set-key (kbd "C-c C-S-o") 'mac-open-current-file)
+
+;; (defun mac-open-current-file-dired ()
+;;   (interactive)
+;;   (shell-command (concat "open \"" (dired-get-file-for-visit) "\"")))
+
+;; (define-key dired-mode-map (kbd "C-c C-S-o") 'mac-open-current-file-dired)
 
 ;; fix osx weirdness with magit avatars
 
