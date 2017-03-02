@@ -21,7 +21,7 @@
   "Get clone commands."
   (goto-char 0)
   (let ((commands (list)))
-    (while (re-search-forward "clone.*?\"\\(http:.*?git\\)" nil t)
+    (while (re-search-forward "\"clone\".*?\"\\(http:.*?git\\)" nil t)
       (let* ((repo-clone-url (match-string 1))
              (repo-name (replace-regexp-in-string ".*/" "" repo-clone-url))
              (repo-clone-dir (replace-regexp-in-string (regexp-quote ".") "/" (replace-regexp-in-string ".git$" "" repo-name))))
