@@ -246,6 +246,7 @@
 
 ;; Company mode everywhere
 (add-hook 'after-init-hook 'global-company-mode)
+(setq company-dabbrev-downcase nil)
 
 ;; Frame window size
 (set-frame-parameter nil 'fullscreen 'fullboth)
