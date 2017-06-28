@@ -221,8 +221,8 @@
 
 ;; gpg
 (setq epg-gpg-program "gpg2")
-;;(setenv "INSIDE_EMACS" (format "%s,comint" emacs-version))
-;;(pinentry-start)
+;;(setq epg-gpg-program "gpg")
+(pinentry-start)
 (setenv "GPG_AGENT_INFO" nil)
 
 ;; ;; Elisp go-to-definition with M-. and back again with M-,
