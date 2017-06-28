@@ -26,7 +26,7 @@
                       :height
                       180))
 
-;; leuven theme
+;; espresso theme
 (defun use-espresso-theme ()
   (interactive)
   (load-theme 'espresso)
@@ -51,10 +51,10 @@
 
 (global-set-key (kbd "C-<f9>") 'use-leuven-theme)
 
-;; (use-default-theme)
+(use-default-theme)
 ;; (use-espresso-theme)
 ;; (use-leuven-theme)
-(use-zenburn-theme)
+;; (use-zenburn-theme)
 
 ;; Don't defer screen updates when performing operations
 (setq redisplay-dont-pause t)

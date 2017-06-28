@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: strapdowm
+# key: style
+# --
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<title>$1</title>
+<xmp theme="cerulean" style="display:none;">
+
+$0
+
+</xmp>
+<script src="http://strapdownjs.com/v/0.2/strapdown.js"></script>
+</html>

@@ -170,8 +170,8 @@
 (global-set-key (kbd "<f1> a") 'apropos)
 
 ;; ;; Should be able to eval-and-replace anywhere.
-;; (global-set-key (kbd "C-c C-e") 'eval-and-replace)
-;; (global-set-key (kbd "M-s-e") 'eval-and-replace)
+(global-set-key (kbd "C-c C-e") 'eval-and-replace)
+(global-set-key (kbd "M-s-e") 'eval-and-replace)
 
 ;; ;; Navigation bindings
 (global-set-key [remap goto-line] 'goto-line-with-feedback)
@@ -376,6 +376,9 @@
 
 ;; Copy file path
 (global-set-key (kbd "C-c p") 'copy-full-path-to-kill-ring)
+
+;; Kill other buffers
+(global-set-key (kbd "C-c C-o") 'kill-other-buffers)
 
 (add-hook
  'dired-mode-hook

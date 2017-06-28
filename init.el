@@ -95,6 +95,7 @@
      wgrep
      yaml-mode
      yasnippet
+     zencoding-mode
      zoom-frm)))
 
 (condition-case nil
@@ -113,6 +114,8 @@
 (when is-mac
   (require-package 'exec-path-from-shell)
   (exec-path-from-shell-initialize))
+
+(setq shell-command-switch "-ic")
 
 ;; guide-key
 (require 'guide-key)
@@ -204,6 +207,10 @@
 (require 'smex)
 (smex-initialize)
 
+;; Zencoding
+(require 'zencoding-mode)
+(add-hook 'sgml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modes
+
 ;; ;; Setup key bindings
 (require 'key-bindings)
 
@@ -211,6 +218,13 @@
 ;; ;; (require 'project-archetypes)
 ;; (require 'my-misc)
 (when is-mac (require 'mac))
+
+;; gpg
+(setq epg-gpg-program "gpg2")
+;;(setq epg-gpg-program "gpg")
+(setenv "INSIDE_EMACS" (format "%s,comint" emacs-version))
+(pinentry-start)
+(setenv "GPG_AGENT_INFO" nil)
 
 ;; ;; Elisp go-to-definition with M-. and back again with M-,
 (autoload 'elisp-slime-nav-mode "elisp-slime-nav")
@@ -232,6 +246,7 @@
 
 ;; Company mode everywhere
 (add-hook 'after-init-hook 'global-company-mode)
+(setq company-dabbrev-downcase nil)
 
 ;; Frame window size
 (set-frame-parameter nil 'fullscreen 'fullboth)

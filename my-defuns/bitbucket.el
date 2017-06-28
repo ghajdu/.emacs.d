@@ -11,21 +11,22 @@
 (defvar bitbucket/project-keys-file "~/.bitbucket-project-keys")
 (defvar bitbucket/url-rest-api "http://cuso.edb.se/stash/rest/api/1.0/")
 
-(defun bitbucket/get-project-keys ()
-  "Gets the Bitbucket projects keys that are 'cached' in bitbucket/project-keys-file."
+(defun bitbucket/get-project-keys (&optional project-keys-file)
+  "Gets the Bitbucket projects keys from PROJECT-KEYS-FILE (defaults to bitbucket/project-keys-file)."
   (split-string (with-temp-buffer
-                  (insert-file-contents bitbucket/project-keys-file)
+                  (insert-file-contents (or project-keys-file bitbucket/project-keys-file))
                   (buffer-string)) "\n" t))
 
-(defun bitbucket/get-clone-commands ()
+(defun bitbucket/get-clone-commands (repo-regexp)
   "Get clone commands."
   (goto-char 0)
   (let ((commands (list)))
-    (while (re-search-forward "clone.*?\"\\(http:.*?git\\)" nil t)
+    (while (re-search-forward "\"clone\".*?\"\\(http:.*?git\\)" nil t)
       (let* ((repo-clone-url (match-string 1))
              (repo-name (replace-regexp-in-string ".*/" "" repo-clone-url))
              (repo-clone-dir (replace-regexp-in-string (regexp-quote ".") "/" (replace-regexp-in-string ".git$" "" repo-name))))
-        (add-to-list 'commands (concat "git clone " repo-clone-url " " repo-clone-dir))))
+        (if (eq 0 (string-match-p repo-regexp repo-name))
+            (add-to-list 'commands (concat "git clone " repo-clone-url " " repo-clone-dir)))))
     (mapconcat 'identity commands "\n")))
 
 (defun bitbucket/clone-repos (project repo-regexp out-dir username password)
@@ -47,7 +48,7 @@
                       (switch-to-buffer (current-buffer))
                       (mkdir out-dir t)
                       (let ((default-directory out-dir))
-                        (async-shell-command (bitbucket/get-clone-commands)))
+                        (async-shell-command (bitbucket/get-clone-commands repo-regexp)))
                       ;;(kill-buffer)
                       (dired out-dir))
                     (list (if (string-suffix-p "/" out-dir) out-dir (concat out-dir "/")) repo-regexp)))))
@@ -84,6 +85,37 @@
                         (kill-buffer)
                         ))
                     ))))
+
+(defun bitbucket/create-clone-script (out-dir project-file username password)
+  "Create Bitbucket clone script in OUT-DIR for all repositories.  USERNAME and PASSWORD are used for authentication."
+  (interactive
+   (list
+    (read-directory-name "Output dir: ")
+    (read-file-name (concat "Project file: (" bitbucket/project-keys-file "): ") (expand-file-name "~") bitbucket/project-keys-file t (replace-regexp-in-string ".*/" "/" (expand-file-name bitbucket/project-keys-file)))
+    (read-string (concat "Username (" bitbucket/default-username "): ") nil nil bitbucket/default-username)
+    (read-passwd "Password: ")))
+  (let ((file-name (concat (if (string-suffix-p "/" out-dir) out-dir (concat out-dir "/")) "clone-script.sh"))
+        (url-request-method "GET")
+        (url-request-extra-headers
+         (list (cons "Content-Type" "application/json")
+               (cons "Authorization" (concat "Basic " (base64-encode-string (concat username ":" password)))))))
+    (save-excursion
+      (if (file-exists-p file-name)
+          (delete-file file-name))
+      (bitbucket/update-project-keys username password)
+      (dolist (project
+               (mapcar (lambda (p) (replace-regexp-in-string ":.*" "" p)) (bitbucket/get-project-keys project-file)))
+        (let ((repo-buffer (url-retrieve-synchronously (concat bitbucket/url-rest-api "projects/" project "/repos?limit=1000"))))
+          (if repo-buffer
+              (progn
+                (switch-to-buffer repo-buffer)
+                (let ((clone-commands (bitbucket/get-clone-commands ".*")))
+                  (erase-buffer)
+                  (insert clone-commands)
+                  (insert "\n")
+                  (write-region (point-min) (point-max) file-name t)
+                  (kill-buffer)
+                  (chmod file-name 484)))))))))
 
 (provide 'bitbucket)
 
