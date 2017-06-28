@@ -95,6 +95,7 @@
      wgrep
      yaml-mode
      yasnippet
+     zencoding-mode
      zoom-frm)))
 
 (condition-case nil
@@ -203,6 +204,10 @@
 ;; Smart M-x is smart
 (require 'smex)
 (smex-initialize)
+
+;; Zencoding
+(require 'zencoding-mode)
+(add-hook 'sgml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modes
 
 ;; ;; Setup key bindings
 (require 'key-bindings)
