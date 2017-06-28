@@ -115,6 +115,8 @@
   (require-package 'exec-path-from-shell)
   (exec-path-from-shell-initialize))
 
+(setq shell-command-switch "-ic")
+
 ;; guide-key
 (require 'guide-key)
 (setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x v" "C-x 8" "C-x +"))
