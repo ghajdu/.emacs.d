@@ -253,3 +253,5 @@
 ;; (add-to-list 'initial-frame-alist '(width  . 166))
 ;; (add-to-list 'initial-frame-alist '(height . 47))
 
+;; Git
+(global-git-commit-mode)
