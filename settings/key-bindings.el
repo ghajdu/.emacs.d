@@ -361,6 +361,10 @@
 ;; (define-key occur-mode-map (kbd "n") 'next-line)
 ;; (define-key occur-mode-map (kbd "p") 'previous-line)
 
+;; phi-search
+(global-set-key (kbd "C-s") 'phi-search)
+(global-set-key (kbd "C-r") 'phi-search-backward)
+
 ;; Sort and delete duplicate lines in buffer"
 (global-set-key (kbd "<f9>") 'sort-and-delete-duplicate-lines)
 

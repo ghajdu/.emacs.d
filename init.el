@@ -84,6 +84,7 @@
      move-text
      multiple-cursors
      paredit
+     phi-search
      popup
      restclient
      s
@@ -216,6 +217,10 @@
 (require 'elmacro)
 (elmacro-mode)
 
+;; phi-search
+(require 'phi-search)
+
+;; Setup key bindings
 (require 'key-bindings)
 
 ;; Misc
