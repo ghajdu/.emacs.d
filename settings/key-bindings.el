@@ -296,7 +296,7 @@
 ;; Buffer file functions
 (global-set-key (kbd "C-x t") 'touch-buffer-file)
 (global-set-key (kbd "C-x C-r") 'rename-current-buffer-file)
-(global-set-key (kbd "C-x C-k") 'delete-current-buffer-file)
+;; (global-set-key (kbd "C-x C-k") 'delete-current-buffer-file)
 
 ;; ;; Jump from file to containing directory
 ;; (global-set-key (kbd "C-x C-j") 'dired-jump)
