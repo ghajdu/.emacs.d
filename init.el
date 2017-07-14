@@ -58,6 +58,7 @@
      diminish
      dired-details
      elisp-slime-nav
+     elmacro
      expand-region
      f
      find-file-in-project
@@ -211,10 +212,13 @@
 (require 'zencoding-mode)
 (add-hook 'sgml-mode-hook 'zencoding-mode) ;; Auto-start on any markup modes
 
-;; ;; Setup key bindings
+;; elmacro
+(require 'elmacro)
+(elmacro-mode)
+
 (require 'key-bindings)
 
-;; ;; Misc
+;; Misc
 ;; ;; (require 'project-archetypes)
 ;; (require 'my-misc)
 (when is-mac (require 'mac))
