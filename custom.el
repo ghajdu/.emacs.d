@@ -9,6 +9,7 @@
  '(flycheck-display-errors-function (function flycheck-pos-tip-error-messages))
  '(ido-mode (quote both) nil (ido))
  '(ido-use-filename-at-point nil)
+ '(nxml-outline-child-indent 4)
  '(package-selected-packages
    (quote
     (find-file-in-project yaml-mode json-mode js2-mode shell-command change-inner ace-jump-mode yasnippet visual-regexp flx exec-path-from-shell string-edit yesql-ghosts prodigy dockerfile-mode whitespace-cleanup-mode highlight-escape-sequences nodejs-repl simple-httpd ido-at-point smartparens css-eldoc dired-details f flycheck-pos-tip flycheck fill-column-indicator markdown-mode htmlize gist hydra inflections edn visual-regexp-steroids scss-mode restclient paredit move-text magit less-css-mode key-chord js2-refactor iy-go-to-char ido-vertical-mode guide-key groovy-mode gitignore-mode gitconfig-mode flx-ido emmet-mode elisp-slime-nav diminish company command-log-mode auto-complete)))
@@ -40,7 +41,8 @@
             (("defexamples\\| => "
               (0
                (quote font-lock-keyword-face))))))
-     (encoding . utf-8)))))
+     (encoding . utf-8))))
+ '(sgml-basic-offset 4))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

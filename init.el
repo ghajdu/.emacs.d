@@ -255,3 +255,9 @@
 
 ;; Git
 (global-git-commit-mode)
+
+;; xml indentation
+(setq nxml-child-indent 4 nxml-attribute-indent 4)
+
+;; indentation
+(setq c-basic-offset 4)
