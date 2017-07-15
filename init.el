@@ -215,7 +215,7 @@
 
 ;; elmacro
 (require 'elmacro)
-(elmacro-mode)
+;; (elmacro-mode)
 
 ;; phi-search
 (require 'phi-search)
