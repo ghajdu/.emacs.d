@@ -219,6 +219,9 @@
 
 ;; phi-search
 (require 'phi-search)
+(setq phi-search-limit           10000
+      phi-search-case-sensitive  'guess) ;; You may also set “phi-search-case-sensitive” to ‘guess, to make phi-search case sensitive only when some upcase letters are in the query.
+
 
 ;; Setup key bindings
 (require 'key-bindings)
