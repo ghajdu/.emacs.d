@@ -241,7 +241,8 @@
 (global-set-key (kbd "C-c C-k") 'eval-buffer)
 
 ;; Create scratch buffer
-(global-set-key (kbd "C-c b") 'create-scratch-buffer)
+;; (global-set-key (kbd "C-c b") 'create-scratch-buffer)
+(global-set-key (kbd "C-c b") 'create-file-visiting-scratch-buffer)
 
 ;; Move windows, even in org-mode
 (global-set-key (kbd "<s-right>") 'windmove-right)

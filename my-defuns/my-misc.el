@@ -46,6 +46,28 @@
   (mapc 'kill-buffer (delq (current-buffer) (buffer-list)))
   (delete-other-windows))
 
+;; Modify below vars as suits your needs
+(defvar file-visiting-scratch-buffer-dir (expand-file-name "scratch" emacs.d-directory))
+
+(defun create-file-visiting-scratch-buffer nil
+  "Create a new file visiting scratch buffer to work in. (could be fscratch - fscratchX)"
+  (interactive)
+  (unless (file-directory-p file-visiting-scratch-buffer-dir)
+    (make-directory file-visiting-scratch-buffer-dir))
+  (let ((n (length (directory-files file-visiting-scratch-buffer-dir '() "^fscratch[1-9]*$")))
+        filename)
+    (while (progn
+             (setq filename (concat "fscratch"
+                                    (if (= n 0) "" (int-to-string n))))
+             (setq n (1+ n))
+             (get-buffer filename)))
+    (find-file (expand-file-name filename file-visiting-scratch-buffer-dir))
+    (emacs-lisp-mode)))
+
+(defun delete-file-visiting-scratch-buffers nil
+  "Delete all file visiting scratch buffers"
+  (interactive)
+  (delete-directory file-visiting-scratch-buffer-dir t nil))
 
 (provide 'my-misc)
 

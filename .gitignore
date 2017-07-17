@@ -18,3 +18,4 @@ session.*
 site-lisp/adventur-mode
 swank
 tramp
+scratch
