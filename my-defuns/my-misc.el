@@ -47,14 +47,15 @@
   (delete-other-windows))
 
 ;; Modify below vars as suits your needs
-(defvar file-visiting-scratch-buffer-dir (expand-file-name "scratch" emacs.d-directory))
+(defvar file-visiting-scratch-buffer-dir (expand-file-name "fscratch" "~/.emacs.d"))
+(defvar file-visiting-scratch-buffer-pattern "^fscratch[1-9]*$")
 
 (defun create-file-visiting-scratch-buffer nil
   "Create a new file visiting scratch buffer to work in. (could be fscratch - fscratchX)"
   (interactive)
   (unless (file-directory-p file-visiting-scratch-buffer-dir)
     (make-directory file-visiting-scratch-buffer-dir))
-  (let ((n (length (directory-files file-visiting-scratch-buffer-dir '() "^fscratch[1-9]*$")))
+  (let ((n (length (directory-files file-visiting-scratch-buffer-dir '() file-visiting-scratch-buffer-pattern)))
         filename)
     (while (progn
              (setq filename (concat "fscratch"
@@ -67,8 +68,15 @@
 (defun delete-file-visiting-scratch-buffers nil
   "Delete all file visiting scratch buffers"
   (interactive)
-  (delete-directory file-visiting-scratch-buffer-dir t nil))
-
+  (let ((n (length (directory-files file-visiting-scratch-buffer-dir '() file-visiting-scratch-buffer-pattern)))
+        filename)
+    (if (yes-or-no-p "Kill and delete all file visiting scratch buffers? ")
+        (progn
+          (dolist (buffer (buffer-list))
+            (if (string-match-p file-visiting-scratch-buffer-pattern (buffer-name buffer))
+                (kill-buffer buffer)))
+          (delete-directory file-visiting-scratch-buffer-dir t nil)))))
+ 
 (provide 'my-misc)
 
 ;;; my-misc.el ends here
