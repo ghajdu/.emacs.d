@@ -386,6 +386,9 @@
 ;; Kill other buffers
 (global-set-key (kbd "C-c C-o") 'kill-other-buffers)
 
+;; Kill current buffer
+(global-set-key (kbd "H-k") (λ (kill-buffer (buffer-name))))
+
 (add-hook
  'dired-mode-hook
  (lambda ()
