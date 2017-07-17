@@ -75,7 +75,8 @@
           (dolist (buffer (buffer-list))
             (if (string-match-p file-visiting-scratch-buffer-pattern (buffer-name buffer))
                 (kill-buffer buffer)))
-          (delete-directory file-visiting-scratch-buffer-dir t nil)))))
+          (delete-directory file-visiting-scratch-buffer-dir t nil)
+          (message "Deleted %s" file-visiting-scratch-buffer-dir)))))
  
 (provide 'my-misc)
 
