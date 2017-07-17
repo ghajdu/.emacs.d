@@ -1,0 +1,36 @@
+# -*- mode: snippet -*-
+# name: rc
+# key: rc
+# --
+:host = ${1:http://127.0.0.1:8081}
+:authorization := (if (yes-or-no-p "Authorization?") (let ((username (read-string (concat "Username (" bitbucket/default-username "): ") nil nil bitbucket/default-username)) (password (read-passwd "Password: "))) (beginning-of-buffer) (re-search-forward "^\\\\(:authorization\\\\).*") (replace-match (concat "\\\\1 = Authorization: Basic " (base64-encode-string (concat  username ":" password))))) (delete-matching-lines ":authorization" (point-min) (point-max)))
+:content-type = Content-Type: ${2:application/json}
+:accept = Accept: $2
+:user-agent = User-Agent: Emacs Restclient
+
+# Get
+GET :host
+:authorization
+:accept
+:user-agent
+
+# Post works too, entity just goes after an empty line. Same is for PUT.
+POST :host
+:authorization
+:content-type
+:accept
+:user-agent
+
+{
+    "${3:foo}": "${4:bar}"
+}
+$0
+#
+# And delete, will return not-found error...
+#
+DELETE :host
+:authorization
+:accept
+:user-agent
+
+
