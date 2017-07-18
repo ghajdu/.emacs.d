@@ -9,26 +9,32 @@
 :user-agent = User-Agent: Emacs Restclient
 
 # Get
-GET :host
+GET :host/${3:account}s
+:authorization
+:accept
+:user-agent
+$0
+# Get
+GET :host/$3/${4:id}
 :authorization
 :accept
 :user-agent
 
 # Post works too, entity just goes after an empty line. Same is for PUT.
-POST :host
+POST :host/$3
 :authorization
 :content-type
 :accept
 :user-agent
 
 {
-    "${3:foo}": "${4:bar}"
+    "$4": "${5:12345}"
 }
-$0
+
 #
 # And delete, will return not-found error...
 #
-DELETE :host
+DELETE :host/$3/$4
 :authorization
 :accept
 :user-agent
