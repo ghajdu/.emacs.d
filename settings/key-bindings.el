@@ -61,10 +61,12 @@
 (define-key global-map (kbd "C-ö") 'ace-jump-mode)
 (define-key global-map (kbd "C-Ö") 'ace-jump-mode-pop-mark)
 
-;; ;; Perform general cleanup.
+;; ;; Perform general cleanup
 (global-set-key (kbd "C-c n") 'cleanup-buffer)
 (global-set-key (kbd "C-c C-n") 'cleanup-buffer)
 (global-set-key (kbd "C-c C-<return>") 'delete-blank-lines)
+;; Delete all blank lines
+(key-chord-define-global "DD" (λ (flush-lines "^$" (point-min) (point-max))))
 
 ;; M-i for back-to-indentation
 (global-set-key (kbd "M-i") 'back-to-indentation)
@@ -201,6 +203,7 @@
 (key-chord-define-global ".-" "[]\C-b")
 (key-chord-define-global "\'\'" "''\C-b")
 (key-chord-define-global "\"\"" "\"\"\C-b")
+(key-chord-define-global "qq" (λ (kill-buffer (buffer-name))))
 
 ;; Webjump let's you quickly search google, wikipedia, emacs wiki
 (global-set-key (kbd "C-x g") 'my-webjump)
