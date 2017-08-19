@@ -77,6 +77,10 @@
                 (kill-buffer buffer)))
           (delete-directory file-visiting-scratch-buffer-dir t nil)
           (message "Deleted %s" file-visiting-scratch-buffer-dir)))))
+
+(fset 'clean-gg-git-status-output
+   (lambda (&optional arg) "Keyboard macro." (interactive "p") (kmacro-exec-ring-item (quote ([home 19 110 111 116 104 105 110 103 32 116 111 32 99 111 109 109 105 116 return 1 67108896 5 134217956 down 5 24 24 up up up 23 return 134217848 102 108 117 115 104 return 94 36 return 19 110 111 116 104 105 110 103 32 116 111 32 99 111 109 109 105 116 return 67108896 1 134217956 24 24 5 down 5 24 24 up up up 23 return 134217848 return 134217840 return end home] 0 "%d")) arg)))
+
  
 (provide 'my-misc)
 
