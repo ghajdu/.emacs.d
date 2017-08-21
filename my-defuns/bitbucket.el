@@ -17,16 +17,19 @@
                   (insert-file-contents (or project-keys-file bitbucket/project-keys-file))
                   (buffer-string)) "\n" t))
 
-(defun bitbucket/get-clone-commands (repo-regexp)
+(defun bitbucket/get-clone-commands (project repo-regexp)
   "Get clone commands."
   (goto-char 0)
   (let ((commands (list)))
-    (while (re-search-forward "\"clone\".*?\"\\(http:.*?git\\)" nil t)
+    (while (re-search-forward (concat "\"clone\".*?\"\\(http:.*?git\\)\"") nil t)
       (let* ((repo-clone-url (match-string 1))
              (repo-name (replace-regexp-in-string ".*/" "" repo-clone-url))
-             (repo-clone-dir (replace-regexp-in-string (regexp-quote ".") "/" (replace-regexp-in-string ".git$" "" repo-name))))
-        (if (eq 0 (string-match-p repo-regexp repo-name))
-            (add-to-list 'commands (concat "git clone " repo-clone-url " " repo-clone-dir)))))
+             (project-name (replace-regexp-in-string ".*/" "" (replace-regexp-in-string (concat "/" repo-name) "" repo-clone-url)))
+             (repo-clone-dir (concat project-name "/" (replace-regexp-in-string (regexp-quote ".") "/" (replace-regexp-in-string ".git$" "" repo-name)))))
+        (if (and (string= (downcase project) (downcase project-name))
+                 (eq 0 (string-match-p repo-regexp repo-name)))
+            (add-to-list 'commands (concat "git clone " repo-clone-url " " repo-clone-dir)))
+        ))
     (mapconcat 'identity commands "\n")))
 
 (defun bitbucket/clone-repos (project repo-regexp out-dir username password)
@@ -44,14 +47,14 @@
                (cons "Authorization" (concat "Basic " (base64-encode-string (concat username ":" password)))))))
     (save-excursion
       (url-retrieve (concat bitbucket/url-rest-api "projects/" project "/repos?limit=1000")
-                    (lambda (status out-dir repo-regexp)
+                    (lambda (status out-dir project repo-regexp)
                       (switch-to-buffer (current-buffer))
                       (mkdir out-dir t)
                       (let ((default-directory out-dir))
-                        (async-shell-command (bitbucket/get-clone-commands repo-regexp)))
+                        (async-shell-command (bitbucket/get-clone-commands project repo-regexp)))
                       ;;(kill-buffer)
                       (dired out-dir))
-                    (list (if (string-suffix-p "/" out-dir) out-dir (concat out-dir "/")) repo-regexp)))))
+                    (list (if (string-suffix-p "/" out-dir) out-dir (concat out-dir "/")) project repo-regexp)))))
 
 (defun bitbucket/get-projects ()
   "Get projects."
@@ -109,13 +112,15 @@
           (if repo-buffer
               (progn
                 (switch-to-buffer repo-buffer)
-                (let ((clone-commands (bitbucket/get-clone-commands ".*")))
-                  (erase-buffer)
-                  (insert clone-commands)
-                  (insert "\n")
-                  (write-region (point-min) (point-max) file-name t)
-                  (kill-buffer)
-                  (chmod file-name 484)))))))))
+                (let ((clone-commands (bitbucket/get-clone-commands project ".*")))
+                  (if (not (string= "" clone-commands)) 
+                      (progn
+                        (erase-buffer)
+                        (insert clone-commands)
+                        (insert "\n")
+                        (write-region (point-min) (point-max) file-name t)
+                        (kill-buffer)
+                        (chmod file-name 484)))))))))))
 
 (provide 'bitbucket)
 
